@@ -1,21 +1,26 @@
 package models;
+
 import java.io.Serializable;
+
 
 public class Producto implements Serializable {
     
+    // Attributes
     private String sku;
     private String nombre;
     private double precio;
     private int stock;
-
+    
+    // Constructor
     public Producto() {}
     public Producto(String sku, String nombre, double precio, int stock) {
         this.sku = sku;
-        this.nombre=nombre;
-        this.precio=precio;
-        this.stock=stock;
+        this.nombre = nombre;
+        this.precio = precio;
+        this.stock = stock;
     }
     
+    // SETTER AND GETTER
     public String getSku() { return sku; }
     public void setSku(String sku) { this.sku = sku; }
     public String getNombre() { return nombre; }
@@ -24,6 +29,7 @@ public class Producto implements Serializable {
     public void setPrecio(double precio) { this.precio = precio; }
     public int getStock() { return stock; }
     public void setStock(int stock) { this.stock = stock; }
-
+    
+    // Override para pruebas
     @Override public String toString() { return sku + " - " + nombre; }
 }
