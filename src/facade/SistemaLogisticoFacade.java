@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Builder.PedidoBuilder;
-import factory.EntidadFactory;
 import models.*;
 
 public class SistemaLogisticoFacade {
