@@ -4,30 +4,48 @@
  */
 package facade;
 
+import Builder.PedidoBuilder;
+import factory.EntidadFactory;
+import strategy.*;
+import models.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import Builder.PedidoBuilder;
-import models.*;
-
 public class SistemaLogisticoFacade {
 
-    private final InventarioService inventario;
-    private final CourierService courier;
-    private final ReporteService reportes;
-
+    
     private final List<Pedido> pedidos;
+    private final InventarioService inventarioService;
+    private final CourierService courierService;
+    private final ReporteService reporteService;
 
+  
+    private final ContextoEnvio contextoEnvio;
+
+   
     public SistemaLogisticoFacade() {
-        inventario = new InventarioService();
-        courier = new CourierService();
-        reportes = new ReporteService();
-        pedidos = new ArrayList<>();
+        this.pedidos = new ArrayList<>();
+        this.inventarioService = new InventarioService();
+        this.courierService = new CourierService();
+        this.reporteService = new ReporteService();
+        this.contextoEnvio = new ContextoEnvio();
     }
 
-    // ============================================================
-    // 1. REGISTRO DE PEDIDO
-    // ============================================================
+   
+    public void seleccionarEstrategiaEnvio(EstrategiaEnvio estrategia) {
+        contextoEnvio.setEstrategia(estrategia);
+    }
+
+    public double calcularCostoEnvio(Pedido pedido) {
+        return contextoEnvio.calcularCosto(pedido);
+    }
+
+    public String estrategiaSeleccionada() {
+        return contextoEnvio.getNombreEstrategia();
+    }
+
+    
     public Pedido registrarPedido(
             String id,
             String fecha,
@@ -38,11 +56,6 @@ public class SistemaLogisticoFacade {
             InfoPago pago,
             boolean prioritario
     ) {
-
-        if (!inventario.descontarStock(producto, cantidad)) {
-            System.out.println("ERROR → No hay stock suficiente");
-            return null;
-        }
 
         Pedido pedido = new PedidoBuilder()
                 .setId(id)
@@ -56,53 +69,84 @@ public class SistemaLogisticoFacade {
                 .setEstado("REGISTRADO")
                 .build();
 
+ 
         pedidos.add(pedido);
 
-        System.out.println("Pedido registrado → " + pedido.getIdPedido());
+        inventarioService.descontarStock(producto, cantidad);
 
         return pedido;
     }
 
-    // ============================================================
-    // 2. GENERAR TRACKING CON SHALOM
-    // ============================================================
-    public void generarTracking(Pedido pedido) {
-
-        InfoEnvio envioActualizado = courier.generarTracking(pedido.getEnvio());
-        pedido.setEnvio(envioActualizado);
+    public void procesarDespacho(Pedido pedido) {
         pedido.setEstado("DESPACHADO");
-
-        System.out.println("Tracking generado: " + envioActualizado.getnTracking());
+        courierService.generarTracking(pedido);
     }
 
-    // ============================================================
-    // 3. CAMBIAR ESTADO DEL PEDIDO
-    // ============================================================
-    public void actualizarEstado(Pedido pedido, String nuevoEstado) {
-        pedido.setEstado(nuevoEstado);
-        if (pedido.getEnvio() != null) pedido.getEnvio().setEstado(nuevoEstado);
-        System.out.println("Estado actualizado → " + nuevoEstado);
+    public void actualizarEstadoTracking(Pedido pedido) {
+        courierService.actualizarEstado(pedido);
     }
 
-    // ============================================================
-    // 4. CONSULTAR ESTADO
-    // ============================================================
-    public String consultarEstado(Pedido pedido) {
-        if (pedido.getEnvio() == null) return "SIN ENVÍO";
-        return courier.consultarEstado(pedido.getEnvio());
-    }
-
-    // ============================================================
-    // 5. REPORTE COMPLETO
-    // ============================================================
-    public void generarReporte() {
-        reportes.generarResumen(pedidos);
-    }
-
-    // ============================================================
-    // 6. OBTENER LISTA DE PEDIDOS
-    // ============================================================
-    public List<Pedido> getPedidos() {
+  
+    public List<Pedido> obtenerPedidos() {
         return pedidos;
+    }
+
+    public Pedido buscarPedidoPorId(String id) {
+        for (Pedido p : pedidos) {
+            if (p.getIdPedido().equals(id)) return p;
+        }
+        return null;
+    }
+
+    public String generarReporteGeneral() {
+        return reporteService.generarReporte(pedidos);
+    }
+
+  
+    private static class InventarioService {
+        public void descontarStock(Producto producto, int cantidad) {
+            if (producto != null) {
+                producto.setStock(producto.getStock() - cantidad);
+            }
+        }
+    }
+
+   
+    private static class CourierService {
+
+        public void generarTracking(Pedido pedido) {
+            if (pedido.getEnvio() == null) pedido.setEnvio(new InfoEnvio());
+
+            pedido.getEnvio().setTransportadora("Shalom");
+            pedido.getEnvio().setnTracking("TRK-" + pedido.getIdPedido());
+            pedido.getEnvio().setEstado("En Camino");
+        }
+
+        public void actualizarEstado(Pedido pedido) {
+            if (pedido.getEnvio() != null) {
+                pedido.getEnvio().setEstado("Entregado");
+            }
+        }
+    }
+
+   
+    private static class ReporteService {
+
+        public String generarReporte(List<Pedido> pedidos) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("=== REPORTE LOGÍSTICO ===\n");
+            sb.append("Total de pedidos: ").append(pedidos.size()).append("\n\n");
+
+            for (Pedido p : pedidos) {
+                sb.append("ID: ").append(p.getIdPedido()).append("\n")
+                        .append("Cliente: ").append(p.getCliente().getNombre()).append("\n")
+                        .append("Producto: ").append(p.getProducto().getNombre()).append("\n")
+                        .append("Cantidad: ").append(p.getCantidad()).append("\n")
+                        .append("Estado: ").append(p.getEstado()).append("\n")
+                        .append("-------------------------\n");
+            }
+
+            return sb.toString();
+        }
     }
 }
