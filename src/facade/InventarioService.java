@@ -9,8 +9,7 @@ import models.Producto;
 public class InventarioService {
 
     public boolean descontarStock(Producto p, int cantidad) {
-        if (p.getStock() < cantidad)
-            return false;
+        if (p.getStock() < cantidad) return false;
         p.setStock(p.getStock() - cantidad);
         return true;
     }
