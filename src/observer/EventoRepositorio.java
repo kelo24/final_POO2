@@ -1,13 +1,28 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package observer;
 
-/**
- *
- * @author Personal
- */
-public class EventoRepositorio {
-    
+import java.util.Date;
+
+public class EventoRepositorio<T> {
+
+    private final TipoEventoRepositorio tipo;
+    private final T entidad;
+    private final Date fecha;
+
+    public EventoRepositorio(TipoEventoRepositorio tipo, T entidad, Date fecha) {
+        this.tipo = tipo;
+        this.entidad = entidad;
+        this.fecha = fecha;
+    }
+
+    public TipoEventoRepositorio getTipo() {
+        return tipo;
+    }
+
+    public T getEntidad() {
+        return entidad;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
 }
