@@ -10,3 +10,9 @@ public interface Repository<T, ID> {
     void actualizar(T entidad);
 
     void eliminar(ID id);
+
+
+    Optional<T> buscarPorId(ID id);
+
+    List<T> obtenerTodos();
+}
