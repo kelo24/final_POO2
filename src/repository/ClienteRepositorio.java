@@ -1,13 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package repository;
 
-/**
- *
- * @author Personal
- */
-public class ClienteRepositorio {
-    
+import models.Cliente;
+
+public class ClienteRepositorio extends RepositorioMemoria<Cliente, String> {
+
+    @Override
+    protected String obtenerId(Cliente entidad) {
+        return entidad.getDni();
+    }
 }

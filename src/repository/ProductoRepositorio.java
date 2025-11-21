@@ -1,13 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package repository;
 
-/**
- *
- * @author Personal
- */
-public class ProductoRepositorio {
-    
+import models.Producto;
+
+public class ProductoRepositorio extends RepositorioMemoria<Producto, String> {
+
+    @Override
+    protected String obtenerId(Producto entidad) {
+        return entidad.getSku();
+    }
 }

@@ -44,7 +44,7 @@ public abstract class RepositorioMemoria<T, ID> implements CrudRepository<T, ID>
             almacenamiento.put(id, entidad);
             notificar(TipoEventoRepositorio.ACTUALIZADO, entidad);
         } else {
-            // Si no existe, lo tratamos como creación
+            
             guardar(entidad);
         }
     }
