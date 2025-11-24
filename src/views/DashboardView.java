@@ -47,7 +47,7 @@ public class DashboardView extends javax.swing.JFrame {
         updateShalom = new javax.swing.JButton();
         editarInfoLogisticaButton = new javax.swing.JButton();
         verifyPaymentButton = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
+        inventarioPane = new javax.swing.JPanel();
         jLabel29 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         inventarioTable = new javax.swing.JTable();
@@ -61,7 +61,10 @@ public class DashboardView extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         registrarMovimientoButton1 = new javax.swing.JButton();
         registrarMovimientoButton = new javax.swing.JButton();
-        jPanel4 = new javax.swing.JPanel();
+        reportePane = new javax.swing.JPanel();
+        jLabel31 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        conteoTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -342,28 +345,28 @@ public class DashboardView extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout inventarioPaneLayout = new javax.swing.GroupLayout(inventarioPane);
+        inventarioPane.setLayout(inventarioPaneLayout);
+        inventarioPaneLayout.setHorizontalGroup(
+            inventarioPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(inventarioPaneLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(inventarioPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel29)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGroup(inventarioPaneLayout.createSequentialGroup()
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(registrarMovimientoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(145, Short.MAX_VALUE))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        inventarioPaneLayout.setVerticalGroup(
+            inventarioPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(inventarioPaneLayout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(inventarioPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGroup(inventarioPaneLayout.createSequentialGroup()
                         .addComponent(jLabel29)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -372,20 +375,46 @@ public class DashboardView extends javax.swing.JFrame {
                 .addContainerGap(91, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Inventario", jPanel3);
+        jTabbedPane1.addTab("Inventario", inventarioPane);
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 890, Short.MAX_VALUE)
+        jLabel31.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel31.setText("Conteo de inventario:");
+
+        conteoTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane4.setViewportView(conteoTable);
+
+        javax.swing.GroupLayout reportePaneLayout = new javax.swing.GroupLayout(reportePane);
+        reportePane.setLayout(reportePaneLayout);
+        reportePaneLayout.setHorizontalGroup(
+            reportePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(reportePaneLayout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(reportePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel31)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(446, Short.MAX_VALUE))
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 429, Short.MAX_VALUE)
+        reportePaneLayout.setVerticalGroup(
+            reportePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(reportePaneLayout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(jLabel31)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(163, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Reportes", jPanel4);
+        jTabbedPane1.addTab("Reportes", reportePane);
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
@@ -504,9 +533,11 @@ public class DashboardView extends javax.swing.JFrame {
     private javax.swing.JButton cambiarEstadoVentasButton;
     private javax.swing.JSpinner cantidadInvField1;
     private javax.swing.JSpinner cantidadProductoVentasField1;
+    private javax.swing.JTable conteoTable;
     private javax.swing.JButton editarInfoLogisticaButton;
     private javax.swing.JButton editarPedidoVentasButton;
     private javax.swing.JComboBox<String> estadoVentasCombo;
+    private javax.swing.JPanel inventarioPane;
     private javax.swing.JTable inventarioTable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel18;
@@ -516,17 +547,17 @@ public class DashboardView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JPanel logisticaPane;
     private javax.swing.JTable logisticaTable;
@@ -534,6 +565,7 @@ public class DashboardView extends javax.swing.JFrame {
     private javax.swing.JButton registrarMovimientoButton;
     private javax.swing.JButton registrarMovimientoButton1;
     private javax.swing.JButton registrarPedidoButton1;
+    private javax.swing.JPanel reportePane;
     private javax.swing.JButton salirButton;
     private javax.swing.JComboBox<String> skuInvCombo;
     private javax.swing.JComboBox<String> skuProductoVentasCombo1;
