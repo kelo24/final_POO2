@@ -32,6 +32,7 @@ public class DashboardView extends javax.swing.JFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         ventasPane = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
+        ventasTable = new javax.swing.JTable();
         agregarpedidoButton = new javax.swing.JButton();
         editarPedidoVentasButton = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
@@ -42,13 +43,40 @@ public class DashboardView extends javax.swing.JFrame {
         salirButton = new javax.swing.JButton();
         logisticaPane = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
+        logisticaTable = new javax.swing.JTable();
         updateShalom = new javax.swing.JButton();
         editarInfoLogisticaButton = new javax.swing.JButton();
         verifyPaymentButton = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
+        jLabel29 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        inventarioTable = new javax.swing.JTable();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        skuInvCombo = new javax.swing.JComboBox<>();
+        movimientoCombo = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        cantidadInvField1 = new javax.swing.JSpinner();
+        jLabel7 = new javax.swing.JLabel();
+        registrarMovimientoButton1 = new javax.swing.JButton();
+        registrarMovimientoButton = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        ventasTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane1.setViewportView(ventasTable);
 
         agregarpedidoButton.setText("Agregar pedido");
         agregarpedidoButton.addActionListener(new java.awt.event.ActionListener() {
@@ -157,6 +185,19 @@ public class DashboardView extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Ventas", ventasPane);
 
+        logisticaTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane2.setViewportView(logisticaTable);
+
         updateShalom.setText("Actualizar estados SHALOM");
         updateShalom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -178,13 +219,13 @@ public class DashboardView extends javax.swing.JFrame {
         logisticaPane.setLayout(logisticaPaneLayout);
         logisticaPaneLayout.setHorizontalGroup(
             logisticaPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 890, Short.MAX_VALUE)
             .addGroup(logisticaPaneLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(logisticaPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(logisticaPaneLayout.createSequentialGroup()
                         .addComponent(editarInfoLogisticaButton, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 498, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(updateShalom, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(logisticaPaneLayout.createSequentialGroup()
                         .addComponent(verifyPaymentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -206,15 +247,129 @@ public class DashboardView extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Logística", logisticaPane);
 
+        jLabel29.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel29.setText("Movimientos");
+
+        inventarioTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane3.setViewportView(inventarioTable);
+
+        jLabel1.setText("SKU");
+
+        skuInvCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                skuInvComboActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Movimiento");
+
+        jLabel4.setText("Cantidad");
+
+        jLabel7.setText("Registrar movimiento");
+
+        registrarMovimientoButton1.setText("Registrar movimiento");
+        registrarMovimientoButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registrarMovimientoButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(28, 28, 28)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(movimientoCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cantidadInvField1)
+                    .addComponent(skuInvCombo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(48, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap(100, Short.MAX_VALUE)
+                .addComponent(jLabel7)
+                .addGap(86, 86, 86))
+            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                    .addContainerGap(92, Short.MAX_VALUE)
+                    .addComponent(registrarMovimientoButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(55, 55, 55)))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap(23, Short.MAX_VALUE)
+                .addComponent(jLabel7)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(skuInvCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(movimientoCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(cantidadInvField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(76, 76, 76))
+            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                    .addContainerGap(193, Short.MAX_VALUE)
+                    .addComponent(registrarMovimientoButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(7, 7, 7)))
+        );
+
+        registrarMovimientoButton.setText("Registrar nuevo producto");
+        registrarMovimientoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registrarMovimientoButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 890, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel29)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(registrarMovimientoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(145, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 429, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel29)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addComponent(registrarMovimientoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(91, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Inventario", jPanel3);
@@ -283,6 +438,42 @@ public class DashboardView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_editarInfoLogisticaButtonActionPerformed
 
+    private void skuInvComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_skuInvComboActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_skuInvComboActionPerformed
+
+    private void registrarMovimientoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarMovimientoButtonActionPerformed
+
+        // obtiene valores
+        String sku = String.valueOf(skuInvCombo.getSelectedItem());
+        String movimiento = String.valueOf(movimientoCombo.getSelectedItem());
+        int cantidad = Integer.parseInt(String.valueOf(cantidadInvField1.getValue()));
+
+        // registra movimiento
+        Movimiento m = new Movimiento(sku, movimiento, cantidad);
+        movimientos.nuevoMovimiento(m);
+
+        // salida de producto
+        if (m.getMovimiento().equals("Salida")) {
+            productos.buscarProductoSKU(sku).disminuirInventario(cantidad);
+        } else if (m.getMovimiento().equals("Ingreso")) {
+            productos.buscarProductoSKU(sku).aumentarInventario(cantidad);
+        }
+
+        // actualizar archivos
+        productos.escribirArchivo();
+        movimientos.escribirArchivo();
+
+        // actualizar tablas
+        actualizarTablaInventario();
+        actualizarTablaConteo();
+
+    }//GEN-LAST:event_registrarMovimientoButtonActionPerformed
+
+    private void registrarMovimientoButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarMovimientoButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_registrarMovimientoButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -311,29 +502,44 @@ public class DashboardView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agregarpedidoButton;
     private javax.swing.JButton cambiarEstadoVentasButton;
+    private javax.swing.JSpinner cantidadInvField1;
     private javax.swing.JSpinner cantidadProductoVentasField1;
     private javax.swing.JButton editarInfoLogisticaButton;
     private javax.swing.JButton editarPedidoVentasButton;
     private javax.swing.JComboBox<String> estadoVentasCombo;
+    private javax.swing.JTable inventarioTable;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel29;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JPanel logisticaPane;
+    private javax.swing.JTable logisticaTable;
+    private javax.swing.JComboBox<String> movimientoCombo;
+    private javax.swing.JButton registrarMovimientoButton;
+    private javax.swing.JButton registrarMovimientoButton1;
     private javax.swing.JButton registrarPedidoButton1;
     private javax.swing.JButton salirButton;
+    private javax.swing.JComboBox<String> skuInvCombo;
     private javax.swing.JComboBox<String> skuProductoVentasCombo1;
     private javax.swing.JButton updateShalom;
     private javax.swing.JPanel ventasPane;
+    private javax.swing.JTable ventasTable;
     private javax.swing.JButton verifyPaymentButton;
     // End of variables declaration//GEN-END:variables
 }

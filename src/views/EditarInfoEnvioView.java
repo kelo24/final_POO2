@@ -46,6 +46,7 @@ public class EditarInfoEnvioView extends javax.swing.JInternalFrame {
         jLabel23 = new javax.swing.JLabel();
         ctrackField = new javax.swing.JTextField();
         updateInfoEnvioButton = new javax.swing.JButton();
+        backButton = new javax.swing.JButton();
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel4.setText("Cambiar información de envío");
@@ -73,6 +74,13 @@ public class EditarInfoEnvioView extends javax.swing.JInternalFrame {
         updateInfoEnvioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 updateInfoEnvioButtonActionPerformed(evt);
+            }
+        });
+
+        backButton.setText("Volver");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButtonActionPerformed(evt);
             }
         });
 
@@ -118,7 +126,10 @@ public class EditarInfoEnvioView extends javax.swing.JInternalFrame {
                                     .addComponent(distField, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(135, 135, 135)
-                        .addComponent(updateInfoEnvioButton)))
+                        .addComponent(updateInfoEnvioButton))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(105, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -162,7 +173,9 @@ public class EditarInfoEnvioView extends javax.swing.JInternalFrame {
                     .addComponent(ctrackField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(updateInfoEnvioButton)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addComponent(backButton)
+                .addGap(14, 14, 14))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -198,8 +211,13 @@ public class EditarInfoEnvioView extends javax.swing.JInternalFrame {
         actualizarTablaLogistica();
     }//GEN-LAST:event_updateInfoEnvioButtonActionPerformed
 
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_backButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton backButton;
     private javax.swing.JTextField ctrackField;
     private javax.swing.JTextField depField;
     private javax.swing.JTextField dirField;
