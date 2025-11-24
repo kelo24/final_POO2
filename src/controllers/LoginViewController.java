@@ -64,8 +64,10 @@ public class LoginViewController {
             loginView.dispose();
         }
         
-        // Abrir DashboardView
+        // Crear y mostrar DashboardView
         DashboardView dashboard = new DashboardView();
+        dashboard.initializeVentasTable();
+        dashboard.initializeLogisticaTable();
         dashboard.setVisible(true);
     }
     
