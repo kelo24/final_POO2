@@ -32,31 +32,35 @@ public class DashboardView extends javax.swing.JFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         ventasPane = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        salirButton = new javax.swing.JButton();
-        salirButton3 = new javax.swing.JButton();
+        agregarpedidoButton = new javax.swing.JButton();
+        editarPedidoVentasButton = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
         estadoVentasCombo = new javax.swing.JComboBox<>();
-        salirButton2 = new javax.swing.JButton();
-        salirButton1 = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
+        cambiarEstadoVentasButton = new javax.swing.JButton();
+        salirButton = new javax.swing.JButton();
+        logisticaPane = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        updateShalom = new javax.swing.JButton();
+        editarInfoLogisticaButton = new javax.swing.JButton();
+        verifyPaymentButton = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        salirButton.setText("Agregar pedido");
-        salirButton.addActionListener(new java.awt.event.ActionListener() {
+        agregarpedidoButton.setText("Agregar pedido");
+        agregarpedidoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                salirButtonActionPerformed(evt);
+                agregarpedidoButtonActionPerformed(evt);
             }
         });
 
-        salirButton3.setText("Editar pedido seleccionado");
-        salirButton3.addActionListener(new java.awt.event.ActionListener() {
+        editarPedidoVentasButton.setText("Editar pedido seleccionado");
+        editarPedidoVentasButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                salirButton3ActionPerformed(evt);
+                editarPedidoVentasButtonActionPerformed(evt);
             }
         });
 
@@ -65,10 +69,10 @@ public class DashboardView extends javax.swing.JFrame {
 
         jLabel30.setText("Nuevo estado:");
 
-        salirButton2.setText("Cambiar estado");
-        salirButton2.addActionListener(new java.awt.event.ActionListener() {
+        cambiarEstadoVentasButton.setText("Cambiar estado");
+        cambiarEstadoVentasButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                salirButton2ActionPerformed(evt);
+                cambiarEstadoVentasButtonActionPerformed(evt);
             }
         });
 
@@ -88,7 +92,7 @@ public class DashboardView extends javax.swing.JFrame {
                         .addComponent(estadoVentasCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(108, 108, 108)
-                        .addComponent(salirButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cambiarEstadoVentasButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(42, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
@@ -101,14 +105,14 @@ public class DashboardView extends javax.swing.JFrame {
                     .addComponent(jLabel30)
                     .addComponent(estadoVentasCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(salirButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cambiarEstadoVentasButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(32, Short.MAX_VALUE))
         );
 
-        salirButton1.setText("Salir");
-        salirButton1.addActionListener(new java.awt.event.ActionListener() {
+        salirButton.setText("Salir");
+        salirButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                salirButton1ActionPerformed(evt);
+                salirButtonActionPerformed(evt);
             }
         });
 
@@ -119,13 +123,13 @@ public class DashboardView extends javax.swing.JFrame {
             .addComponent(jScrollPane1)
             .addGroup(ventasPaneLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(salirButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(salirButton, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(201, 201, 201)
                 .addGroup(ventasPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(salirButton, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(salirButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(agregarpedidoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(editarPedidoVentasButton, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         ventasPaneLayout.setVerticalGroup(
@@ -137,34 +141,70 @@ public class DashboardView extends javax.swing.JFrame {
                         .addGroup(ventasPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(ventasPaneLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(salirButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(agregarpedidoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(ventasPaneLayout.createSequentialGroup()
                                 .addGap(63, 63, 63)
-                                .addComponent(salirButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(editarPedidoVentasButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(ventasPaneLayout.createSequentialGroup()
                                 .addGap(18, 18, 18)
                                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 16, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ventasPaneLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(salirButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(salirButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
         jTabbedPane1.addTab("Ventas", ventasPane);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 890, Short.MAX_VALUE)
+        updateShalom.setText("Actualizar estados SHALOM");
+        updateShalom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateShalomActionPerformed(evt);
+            }
+        });
+
+        editarInfoLogisticaButton.setText("Editar información de envío");
+        editarInfoLogisticaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editarInfoLogisticaButtonActionPerformed(evt);
+            }
+        });
+
+        verifyPaymentButton.setText("Verificar información de pago");
+        verifyPaymentButton.setAlignmentX(0.5F);
+
+        javax.swing.GroupLayout logisticaPaneLayout = new javax.swing.GroupLayout(logisticaPane);
+        logisticaPane.setLayout(logisticaPaneLayout);
+        logisticaPaneLayout.setHorizontalGroup(
+            logisticaPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2)
+            .addGroup(logisticaPaneLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(logisticaPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(logisticaPaneLayout.createSequentialGroup()
+                        .addComponent(editarInfoLogisticaButton, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 498, Short.MAX_VALUE)
+                        .addComponent(updateShalom, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(logisticaPaneLayout.createSequentialGroup()
+                        .addComponent(verifyPaymentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 429, Short.MAX_VALUE)
+        logisticaPaneLayout.setVerticalGroup(
+            logisticaPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(logisticaPaneLayout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(logisticaPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(updateShalom, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(editarInfoLogisticaButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(verifyPaymentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(98, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Logística", jPanel2);
+        jTabbedPane1.addTab("Logística", logisticaPane);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -219,21 +259,29 @@ public class DashboardView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void agregarpedidoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarpedidoButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_agregarpedidoButtonActionPerformed
+
     private void salirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_salirButtonActionPerformed
 
-    private void salirButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirButton1ActionPerformed
+    private void cambiarEstadoVentasButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cambiarEstadoVentasButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_salirButton1ActionPerformed
+    }//GEN-LAST:event_cambiarEstadoVentasButtonActionPerformed
 
-    private void salirButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirButton2ActionPerformed
+    private void editarPedidoVentasButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarPedidoVentasButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_salirButton2ActionPerformed
+    }//GEN-LAST:event_editarPedidoVentasButtonActionPerformed
 
-    private void salirButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirButton3ActionPerformed
+    private void updateShalomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateShalomActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_salirButton3ActionPerformed
+    }//GEN-LAST:event_updateShalomActionPerformed
+
+    private void editarInfoLogisticaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarInfoLogisticaButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editarInfoLogisticaButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -261,7 +309,11 @@ public class DashboardView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton agregarpedidoButton;
+    private javax.swing.JButton cambiarEstadoVentasButton;
     private javax.swing.JSpinner cantidadProductoVentasField1;
+    private javax.swing.JButton editarInfoLogisticaButton;
+    private javax.swing.JButton editarPedidoVentasButton;
     private javax.swing.JComboBox<String> estadoVentasCombo;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
@@ -269,19 +321,19 @@ public class DashboardView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JPanel logisticaPane;
     private javax.swing.JButton registrarPedidoButton1;
     private javax.swing.JButton salirButton;
-    private javax.swing.JButton salirButton1;
-    private javax.swing.JButton salirButton2;
-    private javax.swing.JButton salirButton3;
     private javax.swing.JComboBox<String> skuProductoVentasCombo1;
+    private javax.swing.JButton updateShalom;
     private javax.swing.JPanel ventasPane;
+    private javax.swing.JButton verifyPaymentButton;
     // End of variables declaration//GEN-END:variables
 }
