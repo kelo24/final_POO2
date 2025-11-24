@@ -8,12 +8,12 @@ package views;
  *
  * @author kelvincitopkmz
  */
-public class EditarInfoEnvíoView extends javax.swing.JInternalFrame {
+public class EditarInfoEnvioView extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form EditarInfoEnvíoView
      */
-    public EditarInfoEnvíoView() {
+    public EditarInfoEnvioView() {
         initComponents();
     }
 
