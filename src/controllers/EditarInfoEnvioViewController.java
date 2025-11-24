@@ -1,13 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package controllers;
 
 /**
- *
- * @author kelvincitopkmz
+ * EditarInfoEnvioViewController
  */
 public class EditarInfoEnvioViewController {
     
+    private HomeController homeController;
+    
+    public void initialize() {
+        homeController = HomeController.getInstance();
+        System.out.println("EditarInfoEnvioViewController inicializado");
+    }
 }

@@ -456,29 +456,6 @@ public class DashboardView extends javax.swing.JInternalFrame {
 
     private void registrarMovimientoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarMovimientoButtonActionPerformed
 
-        // obtiene valores
-        String sku = String.valueOf(skuInvCombo.getSelectedItem());
-        String movimiento = String.valueOf(movimientoCombo.getSelectedItem());
-        int cantidad = Integer.parseInt(String.valueOf(cantidadInvField1.getValue()));
-
-        // registra movimiento
-        Movimiento m = new Movimiento(sku, movimiento, cantidad);
-        movimientos.nuevoMovimiento(m);
-
-        // salida de producto
-        if (m.getMovimiento().equals("Salida")) {
-            productos.buscarProductoSKU(sku).disminuirInventario(cantidad);
-        } else if (m.getMovimiento().equals("Ingreso")) {
-            productos.buscarProductoSKU(sku).aumentarInventario(cantidad);
-        }
-
-        // actualizar archivos
-        productos.escribirArchivo();
-        movimientos.escribirArchivo();
-
-        // actualizar tablas
-        actualizarTablaInventario();
-        actualizarTablaConteo();
     }//GEN-LAST:event_registrarMovimientoButtonActionPerformed
 
 

@@ -140,37 +140,6 @@ public class CreateProductView extends javax.swing.JInternalFrame {
 
     private void registrarProductoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarProductoButtonActionPerformed
 
-        String sku = skuInvField.getText();
-        String nombre = nombreInvField.getText();
-        int precio = Integer.parseInt(precioInvField.getText());
-        int cantidad = Integer.parseInt(String.valueOf(cantidadInvField2.getValue()));
-
-        // registra producto
-        Producto p = new Producto(sku, nombre, precio, cantidad);
-        productos.agregarProducto(p);
-
-        Movimiento m = new Movimiento(sku, "Ingreso", cantidad);
-        movimientos.nuevoMovimiento(m);
-
-        // actualizar archivos
-        productos.escribirArchivo();
-
-        // actualiza combos
-        skuInvCombo.removeAllItems();
-        // sku combo
-        for (int i = 0; i < productos.obtenerNProductos(); i++) {
-            String sk = productos.buscarProductoxIndex(i).getSku();
-            skuInvCombo.addItem(sk);
-        }
-        skuVentasCombo.removeAllItems();
-
-        for (int i = 0; i < productos.obtenerNProductos(); i++) {
-            String sk = productos.buscarProductoxIndex(i).getSku();
-            skuVentasCombo.addItem(sk);
-        }
-
-        // actualizar tablas
-        actualizarTablaInventario();
     }//GEN-LAST:event_registrarProductoButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed

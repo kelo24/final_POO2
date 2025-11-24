@@ -2,6 +2,7 @@
 package Main;
 
 import controllers.HomeController;
+import controllers.LoginViewController;
 
 /**
  *
@@ -11,7 +12,10 @@ public class Main {
     
     public static void main(String[] args) {
         
-        HomeController c = new HomeController();
-        c.run();
+        // Ejecutar la aplicación a través del HomeController
+        java.awt.EventQueue.invokeLater(() -> {
+            HomeController homeController = HomeController.getInstance();
+            homeController.run();
+        });
     }
 }

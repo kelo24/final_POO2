@@ -194,21 +194,6 @@ public class EditarInfoEnvioView extends javax.swing.JInternalFrame {
 
     private void updateInfoEnvioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateInfoEnvioButtonActionPerformed
 
-        int orden = Integer.parseInt(logisticaTable.getValueAt(logisticaTable.getSelectedRow(), 0).toString());
-        String trans = transField.getText();
-        String suc = sucField.getText();
-        String ntrack = ntrackField.getText();
-        String ctrack = ctrackField.getText();
-
-        // cambiando
-        pedidos.buscarPedidoxOrden(orden).cambiarInfoTracking(trans, suc, ntrack, ctrack);
-
-        // actualizar archivos
-        pedidos.escribirArchivo();
-
-        // actualizar tablas
-        actualizarTablaVentas();
-        actualizarTablaLogistica();
     }//GEN-LAST:event_updateInfoEnvioButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
