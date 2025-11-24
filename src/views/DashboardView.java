@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package views;
 
@@ -8,12 +8,10 @@ package views;
  *
  * @author kelvincitopkmz
  */
-public class DashboardView extends javax.swing.JFrame {
-    
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DashboardView.class.getName());
+public class DashboardView extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new form Dashboard
+     * Creates new form DashboardView
      */
     public DashboardView() {
         initComponents();
@@ -28,7 +26,6 @@ public class DashboardView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel10 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         ventasPane = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -65,8 +62,6 @@ public class DashboardView extends javax.swing.JFrame {
         jLabel31 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         conteoTable = new javax.swing.JTable();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         ventasTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -153,15 +148,15 @@ public class DashboardView extends javax.swing.JFrame {
             ventasPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1)
             .addGroup(ventasPaneLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(15, 15, 15)
                 .addComponent(salirButton, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addGap(18, 18, 18)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(201, 201, 201)
+                .addGap(184, 184, 184)
                 .addGroup(ventasPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(agregarpedidoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(editarPedidoVentasButton, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         ventasPaneLayout.setVerticalGroup(
             ventasPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -169,21 +164,18 @@ public class DashboardView extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(ventasPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ventasPaneLayout.createSequentialGroup()
-                        .addGroup(ventasPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(ventasPaneLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(agregarpedidoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(ventasPaneLayout.createSequentialGroup()
-                                .addGap(63, 63, 63)
-                                .addComponent(editarPedidoVentasButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(ventasPaneLayout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 16, Short.MAX_VALUE))
+                        .addGap(12, 12, 12)
+                        .addComponent(agregarpedidoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(editarPedidoVentasButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(ventasPaneLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ventasPaneLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(salirButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(salirButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(9, 9, 9)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Ventas", ventasPane);
@@ -222,18 +214,18 @@ public class DashboardView extends javax.swing.JFrame {
         logisticaPane.setLayout(logisticaPaneLayout);
         logisticaPaneLayout.setHorizontalGroup(
             logisticaPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 890, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 873, Short.MAX_VALUE)
             .addGroup(logisticaPaneLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(16, 16, 16)
                 .addGroup(logisticaPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(logisticaPaneLayout.createSequentialGroup()
+                        .addComponent(verifyPaymentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(657, Short.MAX_VALUE))
                     .addGroup(logisticaPaneLayout.createSequentialGroup()
                         .addComponent(editarInfoLogisticaButton, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(updateShalom, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(logisticaPaneLayout.createSequentialGroup()
-                        .addComponent(verifyPaymentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(updateShalom, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(17, 17, 17))))
         );
         logisticaPaneLayout.setVerticalGroup(
             logisticaPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -245,7 +237,7 @@ public class DashboardView extends javax.swing.JFrame {
                     .addComponent(editarInfoLogisticaButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(verifyPaymentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(98, Short.MAX_VALUE))
+                .addContainerGap(82, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Logística", logisticaPane);
@@ -338,7 +330,7 @@ public class DashboardView extends javax.swing.JFrame {
                     .addGap(7, 7, 7)))
         );
 
-        registrarMovimientoButton.setText("Registrar nuevo producto");
+        registrarMovimientoButton.setText("NuevoProductoButton");
         registrarMovimientoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 registrarMovimientoButtonActionPerformed(evt);
@@ -358,7 +350,7 @@ public class DashboardView extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(registrarMovimientoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(145, Short.MAX_VALUE))
+                .addContainerGap(128, Short.MAX_VALUE))
         );
         inventarioPaneLayout.setVerticalGroup(
             inventarioPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -372,7 +364,7 @@ public class DashboardView extends javax.swing.JFrame {
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(registrarMovimientoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(91, Short.MAX_VALUE))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Inventario", inventarioPane);
@@ -402,7 +394,7 @@ public class DashboardView extends javax.swing.JFrame {
                 .addGroup(reportePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel31)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(446, Short.MAX_VALUE))
+                .addContainerGap(429, Short.MAX_VALUE))
         );
         reportePaneLayout.setVerticalGroup(
             reportePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -411,33 +403,20 @@ public class DashboardView extends javax.swing.JFrame {
                 .addComponent(jLabel31)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(163, Short.MAX_VALUE))
+                .addContainerGap(147, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Reportes", reportePane);
-
-        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
-        jPanel10.setLayout(jPanel10Layout);
-        jPanel10Layout.setHorizontalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 890, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-        jPanel10Layout.setVerticalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         pack();
@@ -447,17 +426,17 @@ public class DashboardView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_agregarpedidoButtonActionPerformed
 
-    private void salirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirButtonActionPerformed
+    private void editarPedidoVentasButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarPedidoVentasButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_salirButtonActionPerformed
+    }//GEN-LAST:event_editarPedidoVentasButtonActionPerformed
 
     private void cambiarEstadoVentasButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cambiarEstadoVentasButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cambiarEstadoVentasButtonActionPerformed
 
-    private void editarPedidoVentasButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarPedidoVentasButtonActionPerformed
+    private void salirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_editarPedidoVentasButtonActionPerformed
+    }//GEN-LAST:event_salirButtonActionPerformed
 
     private void updateShalomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateShalomActionPerformed
         // TODO add your handling code here:
@@ -470,6 +449,10 @@ public class DashboardView extends javax.swing.JFrame {
     private void skuInvComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_skuInvComboActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_skuInvComboActionPerformed
+
+    private void registrarMovimientoButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarMovimientoButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_registrarMovimientoButton1ActionPerformed
 
     private void registrarMovimientoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarMovimientoButtonActionPerformed
 
@@ -496,43 +479,13 @@ public class DashboardView extends javax.swing.JFrame {
         // actualizar tablas
         actualizarTablaInventario();
         actualizarTablaConteo();
-
     }//GEN-LAST:event_registrarMovimientoButtonActionPerformed
 
-    private void registrarMovimientoButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarMovimientoButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_registrarMovimientoButton1ActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new DashboardView().setVisible(true));
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agregarpedidoButton;
     private javax.swing.JButton cambiarEstadoVentasButton;
     private javax.swing.JSpinner cantidadInvField1;
-    private javax.swing.JSpinner cantidadProductoVentasField1;
     private javax.swing.JTable conteoTable;
     private javax.swing.JButton editarInfoLogisticaButton;
     private javax.swing.JButton editarPedidoVentasButton;
@@ -540,20 +493,15 @@ public class DashboardView extends javax.swing.JFrame {
     private javax.swing.JPanel inventarioPane;
     private javax.swing.JTable inventarioTable;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -564,11 +512,9 @@ public class DashboardView extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> movimientoCombo;
     private javax.swing.JButton registrarMovimientoButton;
     private javax.swing.JButton registrarMovimientoButton1;
-    private javax.swing.JButton registrarPedidoButton1;
     private javax.swing.JPanel reportePane;
     private javax.swing.JButton salirButton;
     private javax.swing.JComboBox<String> skuInvCombo;
-    private javax.swing.JComboBox<String> skuProductoVentasCombo1;
     private javax.swing.JButton updateShalom;
     private javax.swing.JPanel ventasPane;
     private javax.swing.JTable ventasTable;
