@@ -1,7 +1,7 @@
 
 package Main;
 
-import controllers.MainController;
+import controllers.HomeController;
 
 /**
  *
@@ -11,7 +11,7 @@ public class Main {
     
     public static void main(String[] args) {
         
-        MainController c = new MainController();
+        HomeController c = new HomeController();
         c.run();
     }
 }
