@@ -49,7 +49,7 @@ public class LoginViewController {
         // - Llamar a un servicio de autenticación
         
         // Ejemplo simple (CAMBIAR EN PRODUCCIÓN):
-        return username.equals("admin") && password.equals("1234");
+        return username.equals("1") && password.equals("1");
     }
     
     /**
