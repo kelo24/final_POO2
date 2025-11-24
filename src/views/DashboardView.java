@@ -28,91 +28,124 @@ public class DashboardView extends javax.swing.JFrame {
         this.controller = controller;
     }
 
-    // Agregar este método para inicializar la tabla de ventas
-    public void initializeVentasTable() {
-        // Definir las columnas según tu imagen
-        String[] columnNames = {
-            "Nro Orden",
-            "Fecha",
-            "DNI",
-            "Nombre",
-            "Producto",
-            "Cantidad",
-            "Precio final",
-            "ESTADO"
-        };
-
-        // Crear modelo de tabla sin datos inicialmente
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false; // Hacer la tabla no editable
-            }
-        };
-
-        ventasTable.setModel(model);
-
-        // Ajustar anchos de columnas (opcional)
-        ventasTable.getColumnModel().getColumn(0).setPreferredWidth(70);  // Nro Orden
-        ventasTable.getColumnModel().getColumn(1).setPreferredWidth(90);  // Fecha
-        ventasTable.getColumnModel().getColumn(2).setPreferredWidth(80);  // DNI
-        ventasTable.getColumnModel().getColumn(3).setPreferredWidth(150); // Nombre
-        ventasTable.getColumnModel().getColumn(4).setPreferredWidth(100); // Producto
-        ventasTable.getColumnModel().getColumn(5).setPreferredWidth(80);  // Cantidad
-        ventasTable.getColumnModel().getColumn(6).setPreferredWidth(90);  // Precio final
-        ventasTable.getColumnModel().getColumn(7).setPreferredWidth(100); // ESTADO
-
-        System.out.println("Tabla de ventas inicializada");
-    }
+    // Método para inicializar la tabla de ventas
+public void initializeVentasTable() {
+    // Definir las columnas según tu imagen
+    String[] columnNames = {
+        "Nro Orden",
+        "Fecha",
+        "DNI",
+        "Nombre",
+        "Producto",
+        "Cantidad",
+        "Precio final",
+        "ESTADO"
+    };
+    
+    // Crear modelo de tabla sin datos inicialmente
+    DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false; // Hacer la tabla no editable
+        }
+    };
+    
+    ventasTable.setModel(model);
+    
+    // Ajustar anchos de columnas (opcional)
+    ventasTable.getColumnModel().getColumn(0).setPreferredWidth(70);  // Nro Orden
+    ventasTable.getColumnModel().getColumn(1).setPreferredWidth(90);  // Fecha
+    ventasTable.getColumnModel().getColumn(2).setPreferredWidth(80);  // DNI
+    ventasTable.getColumnModel().getColumn(3).setPreferredWidth(150); // Nombre
+    ventasTable.getColumnModel().getColumn(4).setPreferredWidth(100); // Producto
+    ventasTable.getColumnModel().getColumn(5).setPreferredWidth(80);  // Cantidad
+    ventasTable.getColumnModel().getColumn(6).setPreferredWidth(90);  // Precio final
+    ventasTable.getColumnModel().getColumn(7).setPreferredWidth(100); // ESTADO
+    
+    System.out.println("Tabla de ventas inicializada");
+}
 
 // Método para inicializar la tabla de logística
-    public void initializeLogisticaTable() {
-        // Definir las columnas según la imagen de logística
-        String[] columnNames = {
-            "Nro Orden",
-            "ESTADO",
-            "DNI",
-            "Nombre",
-            "Producto",
-            "Cantidad",
-            "Prioritario",
-            "Departamento",
-            "Provincia",
-            "Distrito",
-            "Dirección",
-            "Transportadora",
-            "Nro Tracking",
-            "Cod Tracking"
-        };
+public void initializeLogisticaTable() {
+    // Definir las columnas según la imagen de logística
+    String[] columnNames = {
+        "Nro Orden",
+        "ESTADO",
+        "DNI",
+        "Nombre",
+        "Producto",
+        "Cantidad",
+        "Prioritario",
+        "Departamento",
+        "Provincia",
+        "Distrito",
+        "Dirección",
+        "Transportadora",
+        "Nro Tracking",
+        "Cod Tracking"
+    };
+    
+    // Crear modelo de tabla sin datos inicialmente
+    DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false; // Hacer la tabla no editable
+        }
+    };
+    
+    logisticaTable.setModel(model);
+    
+    // Ajustar anchos de columnas (opcional)
+    logisticaTable.getColumnModel().getColumn(0).setPreferredWidth(70);   // Nro Orden
+    logisticaTable.getColumnModel().getColumn(1).setPreferredWidth(100);  // ESTADO
+    logisticaTable.getColumnModel().getColumn(2).setPreferredWidth(80);   // DNI
+    logisticaTable.getColumnModel().getColumn(3).setPreferredWidth(120);  // Nombre
+    logisticaTable.getColumnModel().getColumn(4).setPreferredWidth(90);   // Producto
+    logisticaTable.getColumnModel().getColumn(5).setPreferredWidth(70);   // Cantidad
+    logisticaTable.getColumnModel().getColumn(6).setPreferredWidth(80);   // Prioritario
+    logisticaTable.getColumnModel().getColumn(7).setPreferredWidth(100);  // Departamento
+    logisticaTable.getColumnModel().getColumn(8).setPreferredWidth(90);   // Provincia
+    logisticaTable.getColumnModel().getColumn(9).setPreferredWidth(90);   // Distrito
+    logisticaTable.getColumnModel().getColumn(10).setPreferredWidth(150); // Dirección
+    logisticaTable.getColumnModel().getColumn(11).setPreferredWidth(120); // Transportadora
+    logisticaTable.getColumnModel().getColumn(12).setPreferredWidth(100); // Nro Tracking
+    logisticaTable.getColumnModel().getColumn(13).setPreferredWidth(100); // Cod Tracking
+    
+    System.out.println("Tabla de logística inicializada");
+}
 
-        // Crear modelo de tabla sin datos inicialmente
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false; // Hacer la tabla no editable
-            }
-        };
-
-        logisticaTable.setModel(model);
-
-        // Ajustar anchos de columnas (opcional)
-        logisticaTable.getColumnModel().getColumn(0).setPreferredWidth(70);   // Nro Orden
-        logisticaTable.getColumnModel().getColumn(1).setPreferredWidth(100);  // ESTADO
-        logisticaTable.getColumnModel().getColumn(2).setPreferredWidth(80);   // DNI
-        logisticaTable.getColumnModel().getColumn(3).setPreferredWidth(120);  // Nombre
-        logisticaTable.getColumnModel().getColumn(4).setPreferredWidth(90);   // Producto
-        logisticaTable.getColumnModel().getColumn(5).setPreferredWidth(70);   // Cantidad
-        logisticaTable.getColumnModel().getColumn(6).setPreferredWidth(80);   // Prioritario
-        logisticaTable.getColumnModel().getColumn(7).setPreferredWidth(100);  // Departamento
-        logisticaTable.getColumnModel().getColumn(8).setPreferredWidth(90);   // Provincia
-        logisticaTable.getColumnModel().getColumn(9).setPreferredWidth(90);   // Distrito
-        logisticaTable.getColumnModel().getColumn(10).setPreferredWidth(150); // Dirección
-        logisticaTable.getColumnModel().getColumn(11).setPreferredWidth(120); // Transportadora
-        logisticaTable.getColumnModel().getColumn(12).setPreferredWidth(100); // Nro Tracking
-        logisticaTable.getColumnModel().getColumn(13).setPreferredWidth(100); // Cod Tracking
-
-        System.out.println("Tabla de logística inicializada");
-    }
+// Método para inicializar la tabla de inventario
+public void initializeInventarioTable() {
+    // Definir las columnas según la imagen de inventario
+    String[] columnNames = {
+        "Nro Orden",
+        "Fecha",
+        "SKU",
+        "Producto",
+        "Movimiento",
+        "Cantidad"
+    };
+    
+    // Crear modelo de tabla sin datos inicialmente
+    DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false; // Hacer la tabla no editable
+        }
+    };
+    
+    inventarioTable.setModel(model);
+    
+    // Ajustar anchos de columnas (opcional)
+    inventarioTable.getColumnModel().getColumn(0).setPreferredWidth(80);  // Nro Orden
+    inventarioTable.getColumnModel().getColumn(1).setPreferredWidth(100); // Fecha
+    inventarioTable.getColumnModel().getColumn(2).setPreferredWidth(80);  // SKU
+    inventarioTable.getColumnModel().getColumn(3).setPreferredWidth(100); // Producto
+    inventarioTable.getColumnModel().getColumn(4).setPreferredWidth(90);  // Movimiento
+    inventarioTable.getColumnModel().getColumn(5).setPreferredWidth(80);  // Cantidad
+    
+    System.out.println("Tabla de inventario inicializada");
+}
 
     /**
      * This method is called from within the constructor to initialize the form.

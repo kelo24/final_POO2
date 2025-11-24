@@ -68,6 +68,7 @@ public class LoginViewController {
         DashboardView dashboard = new DashboardView();
         dashboard.initializeVentasTable();
         dashboard.initializeLogisticaTable();
+        dashboard.initializeInventarioTable();
         dashboard.setVisible(true);
     }
     
