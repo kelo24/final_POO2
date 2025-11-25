@@ -610,13 +610,16 @@ public class DashboardView extends javax.swing.JFrame {
             .addGroup(inventarioPaneLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(inventarioPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel29)
                     .addGroup(inventarioPaneLayout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(nuevoProductoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(128, Short.MAX_VALUE))
+                        .addGroup(inventarioPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel29)
+                            .addComponent(nuevoProductoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(683, Short.MAX_VALUE))
+                    .addGroup(inventarioPaneLayout.createSequentialGroup()
+                        .addComponent(jScrollPane3)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21))))
         );
         inventarioPaneLayout.setVerticalGroup(
             inventarioPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -659,8 +662,8 @@ public class DashboardView extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(reportePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel31)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(429, Short.MAX_VALUE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 499, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(356, Short.MAX_VALUE))
         );
         reportePaneLayout.setVerticalGroup(
             reportePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -701,6 +704,39 @@ public class DashboardView extends javax.swing.JFrame {
 
     private void editarPedidoVentasButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarPedidoVentasButtonActionPerformed
         // TODO add your handling code here:
+        
+        // Obtener fila seleccionada en la tabla de ventas
+    int filaSeleccionada = ventasTable.getSelectedRow();
+    
+    if (filaSeleccionada == -1) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Por favor, selecciona un pedido de la tabla para editar",
+            "Aviso",
+            javax.swing.JOptionPane.WARNING_MESSAGE
+        );
+        return;
+    }
+    
+    // Obtener número de orden del pedido seleccionado
+    int nroOrden = (int) ventasTable.getValueAt(filaSeleccionada, 0);
+    
+    // Obtener estado del pedido
+    String estado = (String) ventasTable.getValueAt(filaSeleccionada, 7);
+    
+    // Validar que no sea un pedido cancelado
+    if (estado.equals("CANCELADO")) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "No se pueden editar pedidos cancelados",
+            "Aviso",
+            javax.swing.JOptionPane.WARNING_MESSAGE
+        );
+        return;
+    }
+    
+    // Abrir la vista de editar pedido
+    controller.abrirEditarPedidoView(nroOrden);
     }//GEN-LAST:event_editarPedidoVentasButtonActionPerformed
 
     private void cambiarEstadoVentasButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cambiarEstadoVentasButtonActionPerformed

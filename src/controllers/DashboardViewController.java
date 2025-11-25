@@ -82,6 +82,33 @@ public class DashboardViewController {
         frame.setLocationRelativeTo(dashboardView);
         frame.setVisible(true);
     }
+    
+    /**
+ * Abre la vista para editar un pedido existente
+ */
+public void abrirEditarPedidoView(int nroOrden) {
+    System.out.println("Abriendo vista de editar pedido #" + nroOrden);
+    
+    JFrame frame = new JFrame("Editar Pedido #" + nroOrden);
+    views.EditarPedidoView editarPedidoView = new views.EditarPedidoView();
+    
+    // Pasar referencia del DashboardViewController
+    editarPedidoView.setDashboardController(this);
+    
+    // Pasar referencia del JFrame padre para poder cerrarlo
+    editarPedidoView.setParentFrame(frame);
+    
+    // Cargar el pedido
+    editarPedidoView.cargarPedido(nroOrden);
+    
+    editarPedidoView.setBorder(null);
+    ((javax.swing.plaf.basic.BasicInternalFrameUI) editarPedidoView.getUI()).setNorthPane(null);
+    
+    frame.setContentPane(editarPedidoView.getContentPane());
+    frame.pack();
+    frame.setLocationRelativeTo(dashboardView);
+    frame.setVisible(true);
+}
 
     /**
      * Agrega un nuevo pedido

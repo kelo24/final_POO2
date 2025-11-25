@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
+
 package views;
 
 /**
@@ -13,9 +10,72 @@ public class EditarPedidoView extends javax.swing.JInternalFrame {
     /**
      * Creates new form EditarPedidoView
      */
+    
+    private controllers.EditarPedidoViewController controller;
+private controllers.DashboardViewController dashboardController;
+private javax.swing.JFrame parentFrame;
+    
     public EditarPedidoView() {
         initComponents();
+    controller = new controllers.EditarPedidoViewController();
+    controller.initialize();
     }
+    
+    /**
+ * Establece el frame padre para poder cerrarlo
+ */
+public void setParentFrame(javax.swing.JFrame frame) {
+    this.parentFrame = frame;
+}
+
+/**
+ * Establece el dashboard controller
+ */
+public void setDashboardController(controllers.DashboardViewController dashboardController) {
+    this.dashboardController = dashboardController;
+    
+    if (controller != null) {
+        controller.setDashboardController(dashboardController);
+    }
+}
+
+/**
+ * Carga un pedido para editar
+ */
+public void cargarPedido(int nroOrden) {
+    if (controller.cargarPedido(nroOrden)) {
+        models.Pedido pedido = controller.getPedidoActual();
+        
+        // Cargar datos del cliente
+        dniField.setText(pedido.getCliente().getDni());
+        nombreField.setText(pedido.getCliente().getNombre());
+        celularField.setText(pedido.getCliente().getTelefono());
+        
+        // Cargar productos en el combo
+        cargarComboProductos();
+        
+        // Seleccionar el producto actual
+        skuEditarCombo.setSelectedItem(pedido.getProducto().getSku());
+        
+        // Cargar cantidad
+        cantidadEditarProductoField.setValue(pedido.getCantidad());
+        
+        System.out.println("Pedido cargado en la vista para editar");
+    }
+}
+
+/**
+ * Carga los productos en el combo
+ */
+private void cargarComboProductos() {
+    skuEditarCombo.removeAllItems();
+    skuEditarCombo.addItem("Seleccionar...");
+    
+    java.util.List<models.Producto> productos = controller.obtenerProductos();
+    for (models.Producto p : productos) {
+        skuEditarCombo.addItem(p.getSku());
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -35,9 +95,9 @@ public class EditarPedidoView extends javax.swing.JInternalFrame {
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        skuProductoVentasCombo = new javax.swing.JComboBox<>();
+        skuEditarCombo = new javax.swing.JComboBox<>();
         jLabel17 = new javax.swing.JLabel();
-        cantidadProductoVentasField = new javax.swing.JSpinner();
+        cantidadEditarProductoField = new javax.swing.JSpinner();
         registrarPedidoButton = new javax.swing.JButton();
 
         jLabel12.setText("DNI");
@@ -72,9 +132,9 @@ public class EditarPedidoView extends javax.swing.JInternalFrame {
 
         jLabel11.setText("SKU");
 
-        skuProductoVentasCombo.addActionListener(new java.awt.event.ActionListener() {
+        skuEditarCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                skuProductoVentasComboActionPerformed(evt);
+                skuEditarComboActionPerformed(evt);
             }
         });
 
@@ -118,8 +178,8 @@ public class EditarPedidoView extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.TRAILING))
                             .addGap(18, 18, 18)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(skuProductoVentasCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(cantidadProductoVentasField, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(skuEditarCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cantidadEditarProductoField, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(139, 139, 139)
                         .addComponent(jLabel15)))
@@ -131,34 +191,31 @@ public class EditarPedidoView extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jLabel14)
                 .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(dniField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(14, 14, 14)
-                        .addComponent(nombreField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(17, 17, 17)
-                        .addComponent(celularField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel12)
-                        .addGap(14, 14, 14)
-                        .addComponent(jLabel13)
-                        .addGap(17, 17, 17)
-                        .addComponent(jLabel16)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(dniField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12))
+                .addGap(14, 14, 14)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nombreField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel13))
+                .addGap(17, 17, 17)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(celularField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel16))
                 .addGap(57, 57, 57)
                 .addComponent(jLabel15)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(skuProductoVentasCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cantidadProductoVentasField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(skuEditarCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel11)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel17)))
-                .addGap(44, 44, 44)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel17)
+                            .addComponent(cantidadEditarProductoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(53, 53, 53)
                 .addComponent(registrarPedidoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         pack();
@@ -176,9 +233,9 @@ public class EditarPedidoView extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_celularFieldActionPerformed
 
-    private void skuProductoVentasComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_skuProductoVentasComboActionPerformed
+    private void skuEditarComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_skuEditarComboActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_skuProductoVentasComboActionPerformed
+    }//GEN-LAST:event_skuEditarComboActionPerformed
 
     private void registrarPedidoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarPedidoButtonActionPerformed
         // TODO add your handling code here:
@@ -187,7 +244,7 @@ public class EditarPedidoView extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JSpinner cantidadProductoVentasField;
+    private javax.swing.JSpinner cantidadEditarProductoField;
     private javax.swing.JTextField celularField;
     private javax.swing.JTextField dniField;
     private javax.swing.JLabel jLabel11;
@@ -199,6 +256,6 @@ public class EditarPedidoView extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel17;
     private javax.swing.JTextField nombreField;
     private javax.swing.JButton registrarPedidoButton;
-    private javax.swing.JComboBox<String> skuProductoVentasCombo;
+    private javax.swing.JComboBox<String> skuEditarCombo;
     // End of variables declaration//GEN-END:variables
 }
