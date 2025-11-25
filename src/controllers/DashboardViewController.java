@@ -171,7 +171,12 @@ public class DashboardViewController {
                     cantidad
             );
 
-            System.out.println("✅ Stock descontado: " + cantidad + " unidades de " + producto.getNombre());
+            // ✅ Inicializar InfoEnvio con estado "SIN REGISTRO"
+        if (pedido.getEnvio() == null) {
+            pedido.setEnvio(new models.InfoEnvio());
+        }
+        
+        System.out.println("✅ Stock descontado y InfoEnvio inicializado");
         }
 
         // 2. Si cambia a CANCELADO desde CONFIRMADO → Devolver stock
@@ -220,6 +225,46 @@ public class DashboardViewController {
     }
     
     /**
+ * Cambia el estado de envío de un pedido en logística
+ */
+public boolean cambiarEstadoEnvio(int nroOrden, String nuevoEstadoEnvio) {
+    System.out.println("Cambiando estado de envío del pedido " + nroOrden + " a: " + nuevoEstadoEnvio);
+    
+    repository.PedidoRepositorio pedidoRepo = new repository.PedidoRepositorio();
+    models.Pedido pedido = pedidoRepo.findByOrden(nroOrden);
+    
+    if (pedido == null) {
+        System.err.println("Error: Pedido no encontrado");
+        return false;
+    }
+    
+    // Verificar que el pedido esté confirmado
+    if (!pedido.getEstado().equals("CONFIRMADO") && 
+        !pedido.getEstado().equals("CONFIRMADO SIN ADELANTO")) {
+        System.err.println("Error: Solo se puede cambiar el estado de envío de pedidos confirmados");
+        return false;
+    }
+    
+    // Inicializar InfoEnvio si no existe
+    if (pedido.getEnvio() == null) {
+        pedido.setEnvio(new models.InfoEnvio());
+    }
+    
+    // Cambiar el estado de envío
+    pedido.getEnvio().setEstadoEnvio(nuevoEstadoEnvio);
+    
+    // Guardar cambios
+    boolean actualizado = pedidoRepo.update(pedido);
+    
+    if (actualizado) {
+        actualizarTablaLogistica();
+        System.out.println("✅ Estado de envío actualizado a: " + nuevoEstadoEnvio);
+    }
+    
+    return actualizado;
+}
+    
+    /**
  * Actualiza la tabla de logística con pedidos confirmados
  */
 public void actualizarTablaLogistica() {
@@ -250,32 +295,31 @@ public void actualizarTablaLogistica() {
 
     // Agregar todos los pedidos confirmados
     for (models.Pedido p : pedidosConfirmados) {
-        // Obtener datos de envío (si existen)
-        String departamento = "";
-        String provincia = "";
-        String distrito = "";
-        String direccion = "";
-        String transportadora = "";
-        String nroTracking = "";
-        String codTracking = "";
-        
-        if (p.getEnvio() != null) {
-            models.InfoEnvio envio = p.getEnvio();
-            departamento = envio.getDepartamento() != null ? envio.getDepartamento() : "";
-            provincia = envio.getProvincia() != null ? envio.getProvincia() : "";
-            distrito = envio.getDistrito() != null ? envio.getDistrito() : "";
-            direccion = envio.getDireccion() != null ? envio.getDireccion() : "";
-            transportadora = envio.getTransportadora() != null ? envio.getTransportadora() : "";
-            nroTracking = envio.getnTracking() != null ? envio.getnTracking() : "";
-            codTracking = envio.getcTracking() != null ? envio.getcTracking() : "";
+        // ✅ Inicializar InfoEnvio si es null
+        if (p.getEnvio() == null) {
+            p.setEnvio(new models.InfoEnvio());
         }
+        
+        models.InfoEnvio envio = p.getEnvio();
+        
+        // Obtener datos de envío
+        String departamento = envio.getDepartamento() != null ? envio.getDepartamento() : "";
+        String provincia = envio.getProvincia() != null ? envio.getProvincia() : "";
+        String distrito = envio.getDistrito() != null ? envio.getDistrito() : "";
+        String direccion = envio.getDireccion() != null ? envio.getDireccion() : "";
+        String transportadora = envio.getTransportadora() != null ? envio.getTransportadora() : "";
+        String nroTracking = envio.getnTracking() != null ? envio.getnTracking() : "";
+        String codTracking = envio.getcTracking() != null ? envio.getcTracking() : "";
+        
+        // ✅ Obtener ESTADO DE ENVÍO (no estado del pedido)
+        String estadoEnvio = envio.getEstadoEnvio() != null ? envio.getEstadoEnvio() : "SIN REGISTRO";
         
         // Determinar si es prioritario
         String prioritario = p.isPrioritario() ? "SÍ" : "NO";
         
         model.addRow(new Object[]{
             p.getOrden(),              // Nro Orden
-            p.getEstado(),             // ESTADO
+            estadoEnvio,               // ✅ ESTADO DE ENVÍO (no estado del pedido)
             p.getCliente().getDni(),   // DNI
             p.getCliente().getNombre(), // Nombre
             p.getProducto().getNombre(), // Producto

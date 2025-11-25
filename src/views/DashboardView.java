@@ -172,21 +172,21 @@ public class DashboardView extends javax.swing.JFrame {
     public void initializeLogisticaTable() {
         // Definir las columnas según la imagen de logística
         String[] columnNames = {
-            "Nro Orden",
-            "ESTADO",
-            "DNI",
-            "Nombre",
-            "Producto",
-            "Cantidad",
-            "Prioritario",
-            "Departamento",
-            "Provincia",
-            "Distrito",
-            "Dirección",
-            "Transportadora",
-            "Nro Tracking",
-            "Cod Tracking"
-        };
+        "Nro Orden",
+        "ESTADO DE ENVÍO",  // ✅ Cambiado de "ESTADO" a "ESTADO DE ENVÍO"
+        "DNI",
+        "Nombre",
+        "Producto",
+        "Cantidad",
+        "Prioritario",
+        "Departamento",
+        "Provincia",
+        "Distrito",
+        "Dirección",
+        "Transportadora",
+        "Nro Tracking",
+        "Cod Tracking"
+    };
 
         // Crear modelo de tabla sin datos inicialmente
         DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
