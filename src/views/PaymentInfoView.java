@@ -13,8 +13,58 @@ public class PaymentInfoView extends javax.swing.JInternalFrame {
     /**
      * Creates new form PaymentInfoView
      */
+    
+    private controllers.PaymentInfoViewController controller;
+private controllers.DashboardViewController dashboardController;
+private javax.swing.JFrame parentFrame;
+    
     public PaymentInfoView() {
         initComponents();
+    controller = new controllers.PaymentInfoViewController();
+    controller.initialize();
+    }
+    
+    /**
+ * Establece el frame padre para poder cerrarlo
+ */
+public void setParentFrame(javax.swing.JFrame frame) {
+    this.parentFrame = frame;
+}
+
+/**
+ * Establece el dashboard controller
+ */
+public void setDashboardController(controllers.DashboardViewController dashboardController) {
+    this.dashboardController = dashboardController;
+    
+    if (controller != null) {
+        controller.setDashboardController(dashboardController);
+    }
+}
+
+/**
+     * Carga un pedido para ver su información de pago
+     */
+    public void cargarPedido(int nroOrden) {
+        if (controller.cargarPedido(nroOrden)) {
+            models.Pedido pedido = controller.getPedidoActual();
+            models.InfoPago pago = pedido.getPago();
+            
+            // Calcular saldo restante
+            double saldoRestante = controller.calcularSaldoRestante();
+            double adelanto = (pago != null) ? pago.getAdelanto() : 0.0;
+            
+            // Mostrar información en los campos
+            // (ajusta los nombres según tus componentes: ctrackField y ctrackField1)
+            ctrackField.setText(String.format("%.2f", adelanto));
+            ctrackField1.setText(String.format("%.2f", saldoRestante));
+            
+            // Deshabilitar campos para solo lectura
+            ctrackField.setEditable(false);
+            ctrackField1.setEditable(false);
+            
+            System.out.println("Información de pago cargada - Adelanto: S/ " + adelanto + ", Saldo: S/ " + saldoRestante);
+        }
     }
 
     /**
@@ -32,7 +82,7 @@ public class PaymentInfoView extends javax.swing.JInternalFrame {
         ctrackField = new javax.swing.JTextField();
         ctrackField1 = new javax.swing.JTextField();
         jLabel24 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        registerPayButton = new javax.swing.JButton();
         backButton = new javax.swing.JButton();
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -42,10 +92,10 @@ public class PaymentInfoView extends javax.swing.JInternalFrame {
 
         jLabel24.setText("Saldo restante:");
 
-        jButton1.setText("REGISTRAR PAGO COMPLETO");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        registerPayButton.setText("REGISTRAR PAGO COMPLETO");
+        registerPayButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                registerPayButtonActionPerformed(evt);
             }
         });
 
@@ -81,7 +131,7 @@ public class PaymentInfoView extends javax.swing.JInternalFrame {
                         .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(85, 85, 85)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(registerPayButton, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(83, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -98,7 +148,7 @@ public class PaymentInfoView extends javax.swing.JInternalFrame {
                     .addComponent(jLabel24)
                     .addComponent(ctrackField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(36, 36, 36)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(registerPayButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(45, 45, 45)
                 .addComponent(backButton)
                 .addContainerGap(34, Short.MAX_VALUE))
@@ -118,12 +168,86 @@ public class PaymentInfoView extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void registerPayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerPayButtonActionPerformed
+        if (controller == null) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Error: Controller no inicializado",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE
+        );
+        return;
+    }
+    
+    // Validar que el pedido puede editar info de pago
+    if (!controller.puedeEditarPago()) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Este pedido no puede modificar su información de pago",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE
+        );
+        return;
+    }
+    
+    // Obtener información del pedido
+    models.Pedido pedido = controller.getPedidoActual();
+    double precioTotal = pedido.getPrecio();
+    double costoEnvio = pedido.calcularCostoEnvio(); // ✅ Strategy
+    double montoTotal = precioTotal + costoEnvio;
+    
+    // Confirmar acción
+    int confirmar = javax.swing.JOptionPane.showConfirmDialog(
+        this,
+        String.format("¿Estás seguro de registrar el pago completo?\n\n" +
+                     "Precio del producto: S/ %.2f\n" +
+                     "Costo de envío (%s): S/ %.2f\n" +
+                     "MONTO TOTAL: S/ %.2f",
+                     precioTotal, 
+                     pedido.getTipoEnvio(),
+                     costoEnvio, 
+                     montoTotal),
+        "Confirmar pago completo",
+        javax.swing.JOptionPane.YES_NO_OPTION,
+        javax.swing.JOptionPane.QUESTION_MESSAGE
+    );
+    
+    if (confirmar != javax.swing.JOptionPane.YES_OPTION) {
+        return;
+    }
+    
+    // Registrar pago completo
+    if (controller.registrarPagoCompleto() && controller.guardarCambios()) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            String.format("Pago completo registrado exitosamente\n\nMonto pagado: S/ %.2f", montoTotal),
+            "Éxito",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE
+        );
+        
+        // Recargar información
+        cargarPedido(controller.getPedidoActual().getOrden());
+        
+        // Cerrar la ventana después de registrar el pago
+        if (parentFrame != null) {
+            parentFrame.dispose();
+        }
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Error al registrar el pago completo",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE
+        );
+    }
+    }//GEN-LAST:event_registerPayButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
+        
+        if (parentFrame != null) {
+        parentFrame.dispose();
+    }
     }//GEN-LAST:event_backButtonActionPerformed
 
 
@@ -131,10 +255,10 @@ public class PaymentInfoView extends javax.swing.JInternalFrame {
     private javax.swing.JButton backButton;
     private javax.swing.JTextField ctrackField;
     private javax.swing.JTextField ctrackField1;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton registerPayButton;
     // End of variables declaration//GEN-END:variables
 }

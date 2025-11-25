@@ -478,6 +478,11 @@ public class DashboardView extends javax.swing.JFrame {
 
         verifyPaymentButton.setText("Verificar información de pago");
         verifyPaymentButton.setAlignmentX(0.5F);
+        verifyPaymentButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verifyPaymentButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout logisticaPaneLayout = new javax.swing.GroupLayout(logisticaPane);
         logisticaPane.setLayout(logisticaPaneLayout);
@@ -743,88 +748,86 @@ public class DashboardView extends javax.swing.JFrame {
     }//GEN-LAST:event_editarPedidoVentasButtonActionPerformed
 
     private void cambiarEstadoVentasButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cambiarEstadoVentasButtonActionPerformed
-        // TODO add your handling code here:
-
         // Obtener fila seleccionada en la tabla de ventas
-        int filaSeleccionada = ventasTable.getSelectedRow();
-
-        if (filaSeleccionada == -1) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Por favor, selecciona un pedido de la tabla",
-                    "Aviso",
-                    JOptionPane.WARNING_MESSAGE
-            );
-            return;
-        }
-
-        // Obtener número de orden
-        int nroOrden = (int) ventasTable.getValueAt(filaSeleccionada, 0);
-
-        // Obtener nuevo estado del combo
-        String nuevoEstado = (String) estadoVentasCombo.getSelectedItem();
-
-        if (nuevoEstado == null || nuevoEstado.equals("Seleccionar...")) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Por favor, selecciona un estado válido",
-                    "Aviso",
-                    JOptionPane.WARNING_MESSAGE
-            );
-            return;
-        }
-
-        // Obtener estado actual del pedido
-        String estadoActual = (String) ventasTable.getValueAt(filaSeleccionada, 7);
-
-        // Validar que no se seleccione el mismo estado
-        if (estadoActual.equals(nuevoEstado)) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "El pedido ya tiene ese estado",
-                    "Aviso",
-                    JOptionPane.WARNING_MESSAGE
-            );
-            return;
-        }
-
-        // Confirmar el cambio
-        int confirmar = JOptionPane.showConfirmDialog(
-                this,
-                "¿Estás seguro de cambiar el estado del pedido #" + nroOrden + "\n"
-                + "De: " + estadoActual + "\n"
-                + "A: " + nuevoEstado + "?",
-                "Confirmar cambio de estado",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE
+    int filaSeleccionada = ventasTable.getSelectedRow();
+    
+    if (filaSeleccionada == -1) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Por favor, selecciona un pedido de la tabla para cambiar su estado",
+            "Aviso",
+            javax.swing.JOptionPane.WARNING_MESSAGE
         );
-
-        if (confirmar != JOptionPane.YES_OPTION) {
-            return;
-        }
-
-        // Llamar al controller para cambiar el estado
-        boolean exitoso = controller.cambiarEstadoPedido(nroOrden, nuevoEstado);
-
-        if (exitoso) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Estado actualizado exitosamente",
-                    "Éxito",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
-
-            // Resetear combo
-            estadoVentasCombo.setSelectedIndex(0);
-        } else {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Error al actualizar el estado.\n"
-                    + "Verifica que haya stock suficiente si estás confirmando un pedido.",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE
-            );
-        }
+        return;
+    }
+    
+    // Obtener número de orden (columna 0)
+    int nroOrden = (int) ventasTable.getValueAt(filaSeleccionada, 0);
+    
+    // Obtener estado actual (columna 8)
+    String estadoActual = (String) ventasTable.getValueAt(filaSeleccionada, 8);
+    
+    // Obtener nuevo estado del combo
+    String nuevoEstado = (String) estadoVentasCombo.getSelectedItem();
+    
+    if (nuevoEstado == null || nuevoEstado.equals("Seleccionar...")) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Por favor, selecciona un estado válido",
+            "Aviso",
+            javax.swing.JOptionPane.WARNING_MESSAGE
+        );
+        return;
+    }
+    
+    // Validar que no se seleccione el mismo estado
+    if (estadoActual.equals(nuevoEstado)) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "El pedido ya tiene ese estado",
+            "Aviso",
+            javax.swing.JOptionPane.WARNING_MESSAGE
+        );
+        return;
+    }
+    
+    // Confirmar el cambio
+    int confirmar = javax.swing.JOptionPane.showConfirmDialog(
+        this,
+        "¿Estás seguro de cambiar el estado del pedido #" + nroOrden + "\n" +
+        "De: " + estadoActual + "\n" +
+        "A: " + nuevoEstado + "?",
+        "Confirmar cambio de estado",
+        javax.swing.JOptionPane.YES_NO_OPTION,
+        javax.swing.JOptionPane.QUESTION_MESSAGE
+    );
+    
+    if (confirmar != javax.swing.JOptionPane.YES_OPTION) {
+        return;
+    }
+    
+    // Llamar al controller para cambiar el estado
+    boolean exitoso = controller.cambiarEstadoPedido(nroOrden, nuevoEstado);
+    
+    if (exitoso) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Estado actualizado exitosamente",
+            "Éxito",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE
+        );
+        
+        // Resetear combo
+        estadoVentasCombo.setSelectedIndex(0);
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Error al actualizar el estado.\n" +
+            "Verifica que haya stock suficiente si estás confirmando un pedido.",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE
+        );
+    }
     }//GEN-LAST:event_cambiarEstadoVentasButtonActionPerformed
 
     private void salirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirButtonActionPerformed
@@ -948,6 +951,55 @@ public class DashboardView extends javax.swing.JFrame {
         // Llamar al controller para abrir la vista de crear producto
         controller.abrirCreateProductView();
     }//GEN-LAST:event_nuevoProductoButtonActionPerformed
+
+    private void verifyPaymentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verifyPaymentButtonActionPerformed
+        // TODO add your handling code here:
+        
+        // Obtener fila seleccionada en la tabla de logística
+    int filaSeleccionada = logisticaTable.getSelectedRow();
+    
+    if (filaSeleccionada == -1) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Por favor, selecciona un pedido de la tabla de logística",
+            "Aviso",
+            javax.swing.JOptionPane.WARNING_MESSAGE
+        );
+        return;
+    }
+    
+    // Obtener número de orden del pedido seleccionado
+    int nroOrden = (int) logisticaTable.getValueAt(filaSeleccionada, 0);
+    
+    // Obtener estado del pedido (necesitamos buscar el pedido para verificar)
+    repository.PedidoRepositorio pedidoRepo = new repository.PedidoRepositorio();
+    models.Pedido pedido = pedidoRepo.findByOrden(nroOrden);
+    
+    if (pedido == null) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Error: No se pudo encontrar el pedido",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE
+        );
+        return;
+    }
+    
+    // Validar que sea un pedido confirmado
+    if (!pedido.getEstado().equals("CONFIRMADO") && 
+        !pedido.getEstado().equals("CONFIRMADO SIN ADELANTO")) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Solo se puede verificar la información de pago de pedidos confirmados",
+            "Aviso",
+            javax.swing.JOptionPane.WARNING_MESSAGE
+        );
+        return;
+    }
+    
+    // Abrir la vista de información de pago
+    controller.abrirPaymentInfoView(nroOrden);
+    }//GEN-LAST:event_verifyPaymentButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

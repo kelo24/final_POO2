@@ -142,6 +142,33 @@ public class DashboardViewController {
     }
 
     /**
+ * Abre la vista para verificar información de pago de un pedido
+ */
+public void abrirPaymentInfoView(int nroOrden) {
+    System.out.println("Abriendo vista de información de pago para pedido #" + nroOrden);
+    
+    JFrame frame = new JFrame("Información de Pago - Pedido #" + nroOrden);
+    views.PaymentInfoView paymentInfoView = new views.PaymentInfoView();
+    
+    // Pasar referencia del DashboardViewController
+    paymentInfoView.setDashboardController(this);
+    
+    // Pasar referencia del JFrame padre para poder cerrarlo
+    paymentInfoView.setParentFrame(frame);
+    
+    // Cargar el pedido
+    paymentInfoView.cargarPedido(nroOrden);
+    
+    paymentInfoView.setBorder(null);
+    ((javax.swing.plaf.basic.BasicInternalFrameUI) paymentInfoView.getUI()).setNorthPane(null);
+    
+    frame.setContentPane(paymentInfoView.getContentPane());
+    frame.pack();
+    frame.setLocationRelativeTo(dashboardView);
+    frame.setVisible(true);
+}
+    
+    /**
      * Agrega un nuevo pedido
      */
     public void agregarPedido() {
@@ -298,71 +325,68 @@ public class DashboardViewController {
     /**
      * Actualiza la tabla de logística con pedidos confirmados
      */
-    /**
- * Actualiza la tabla de logística con pedidos confirmados
- */
-public void actualizarTablaLogistica() {
-    if (dashboardView == null) {
-        System.err.println("DashboardView no está inicializado");
-        return;
-    }
-
-    repository.PedidoRepositorio pedidoRepo = new repository.PedidoRepositorio();
-    java.util.List<models.Pedido> todosPedidos = pedidoRepo.findAll();
-    
-    // Filtrar solo pedidos CONFIRMADOS o CONFIRMADO SIN ADELANTO
-    java.util.List<models.Pedido> pedidosConfirmados = new java.util.ArrayList<>();
-    for (models.Pedido p : todosPedidos) {
-        if (p.getEstado().equals("CONFIRMADO") || 
-            p.getEstado().equals("CONFIRMADO SIN ADELANTO")) {
-            pedidosConfirmados.add(p);
+    public void actualizarTablaLogistica() {
+        if (dashboardView == null) {
+            System.err.println("DashboardView no está inicializado");
+            return;
         }
-    }
 
-    DefaultTableModel model = (DefaultTableModel) dashboardView.getLogisticaTable().getModel();
+        repository.PedidoRepositorio pedidoRepo = new repository.PedidoRepositorio();
+        java.util.List<models.Pedido> todosPedidos = pedidoRepo.findAll();
 
-    // Limpiar tabla
-    model.setRowCount(0);
-
-    // Agregar todos los pedidos confirmados
-    for (models.Pedido p : pedidosConfirmados) {
-        // Inicializar InfoEnvio si es null
-        if (p.getEnvio() == null) {
-            p.setEnvio(new models.InfoEnvio());
+        // Filtrar solo pedidos CONFIRMADOS o CONFIRMADO SIN ADELANTO
+        java.util.List<models.Pedido> pedidosConfirmados = new java.util.ArrayList<>();
+        for (models.Pedido p : todosPedidos) {
+            if (p.getEstado().equals("CONFIRMADO")
+                    || p.getEstado().equals("CONFIRMADO SIN ADELANTO")) {
+                pedidosConfirmados.add(p);
+            }
         }
-        
-        models.InfoEnvio envio = p.getEnvio();
-        
-        // Obtener datos de envío
-        String departamento = envio.getDepartamento() != null ? envio.getDepartamento() : "";
-        String provincia = envio.getProvincia() != null ? envio.getProvincia() : "";
-        String distrito = envio.getDistrito() != null ? envio.getDistrito() : "";
-        String direccion = envio.getDireccion() != null ? envio.getDireccion() : "";
-        String transportadora = envio.getTransportadora() != null ? envio.getTransportadora() : "";
-        String nroTracking = envio.getnTracking() != null ? envio.getnTracking() : "";
-        String codTracking = envio.getcTracking() != null ? envio.getcTracking() : "";
-        String estadoEnvio = envio.getEstadoEnvio() != null ? envio.getEstadoEnvio() : "SIN REGISTRO";
-        
-        model.addRow(new Object[]{
-            p.getOrden(),
-            estadoEnvio,
-            p.getCliente().getDni(),
-            p.getCliente().getNombre(),
-            p.getProducto().getNombre(),
-            p.getCantidad(),
-            p.getTipoEnvio(), // ✅ Cambiar de prioritario a tipo de envío
-            departamento,
-            provincia,
-            distrito,
-            direccion,
-            transportadora,
-            nroTracking,
-            codTracking
-        });
-    }
 
-    System.out.println("Tabla de logística actualizada con " + pedidosConfirmados.size() + " pedidos confirmados");
-}
+        DefaultTableModel model = (DefaultTableModel) dashboardView.getLogisticaTable().getModel();
+
+        // Limpiar tabla
+        model.setRowCount(0);
+
+        // Agregar todos los pedidos confirmados
+        for (models.Pedido p : pedidosConfirmados) {
+            // Inicializar InfoEnvio si es null
+            if (p.getEnvio() == null) {
+                p.setEnvio(new models.InfoEnvio());
+            }
+
+            models.InfoEnvio envio = p.getEnvio();
+
+            // Obtener datos de envío
+            String departamento = envio.getDepartamento() != null ? envio.getDepartamento() : "";
+            String provincia = envio.getProvincia() != null ? envio.getProvincia() : "";
+            String distrito = envio.getDistrito() != null ? envio.getDistrito() : "";
+            String direccion = envio.getDireccion() != null ? envio.getDireccion() : "";
+            String transportadora = envio.getTransportadora() != null ? envio.getTransportadora() : "";
+            String nroTracking = envio.getnTracking() != null ? envio.getnTracking() : "";
+            String codTracking = envio.getcTracking() != null ? envio.getcTracking() : "";
+            String estadoEnvio = envio.getEstadoEnvio() != null ? envio.getEstadoEnvio() : "SIN REGISTRO";
+
+            model.addRow(new Object[]{
+                p.getOrden(),
+                estadoEnvio,
+                p.getCliente().getDni(),
+                p.getCliente().getNombre(),
+                p.getProducto().getNombre(),
+                p.getCantidad(),
+                p.getTipoEnvio(), // ✅ Cambiar de prioritario a tipo de envío
+                departamento,
+                provincia,
+                distrito,
+                direccion,
+                transportadora,
+                nroTracking,
+                codTracking
+            });
+        }
+
+        System.out.println("Tabla de logística actualizada con " + pedidosConfirmados.size() + " pedidos confirmados");
+    }
 
     /**
      * Actualiza la tabla de inventario con todos los movimientos
@@ -438,39 +462,39 @@ public void actualizarTablaLogistica() {
     }
 
     /**
- * Actualiza la tabla de ventas (pedidos)
- */
-public void actualizarTablaVentas() {
-    if (dashboardView == null) {
-        System.err.println("DashboardView no está inicializado");
-        return;
+     * Actualiza la tabla de ventas (pedidos)
+     */
+    public void actualizarTablaVentas() {
+        if (dashboardView == null) {
+            System.err.println("DashboardView no está inicializado");
+            return;
+        }
+
+        repository.PedidoRepositorio pedidoRepo = new repository.PedidoRepositorio();
+        java.util.List<models.Pedido> pedidos = pedidoRepo.findAll();
+
+        DefaultTableModel model = (DefaultTableModel) dashboardView.getVentasTable().getModel();
+
+        // Limpiar tabla
+        model.setRowCount(0);
+
+        // Agregar todos los pedidos
+        for (models.Pedido p : pedidos) {
+            model.addRow(new Object[]{
+                p.getOrden(),
+                p.getFechaPedido(),
+                p.getCliente().getDni(),
+                p.getCliente().getNombre(),
+                p.getProducto().getNombre(),
+                p.getCantidad(),
+                p.getTipoEnvio(), // ✅ Cambiar de isPrioritario() a getTipoEnvio()
+                p.getPrecio(),
+                p.getEstado()
+            });
+        }
+
+        System.out.println("Tabla de ventas actualizada con " + pedidos.size() + " pedidos");
     }
-
-    repository.PedidoRepositorio pedidoRepo = new repository.PedidoRepositorio();
-    java.util.List<models.Pedido> pedidos = pedidoRepo.findAll();
-
-    DefaultTableModel model = (DefaultTableModel) dashboardView.getVentasTable().getModel();
-
-    // Limpiar tabla
-    model.setRowCount(0);
-
-    // Agregar todos los pedidos
-    for (models.Pedido p : pedidos) {
-        model.addRow(new Object[]{
-            p.getOrden(),
-            p.getFechaPedido(),
-            p.getCliente().getDni(),
-            p.getCliente().getNombre(),
-            p.getProducto().getNombre(),
-            p.getCantidad(),
-            p.getTipoEnvio(), // ✅ Cambiar de isPrioritario() a getTipoEnvio()
-            p.getPrecio(),
-            p.getEstado()
-        });
-    }
-
-    System.out.println("Tabla de ventas actualizada con " + pedidos.size() + " pedidos");
-}
 
     /**
      * Registra un movimiento de inventario y actualiza las tablas

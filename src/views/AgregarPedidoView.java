@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
 package views;
 
 /**
@@ -34,21 +30,21 @@ public class AgregarPedidoView extends javax.swing.JInternalFrame {
     }
 
     public void setParentFrame(javax.swing.JFrame frame) {
-    this.parentFrame = frame;
-}
-    
-/**
- * Inicializa el combo de tipo de envío usando el enum
- */
-private void inicializarComboTipoEnvio() {
-    tipoEnvioCombo.removeAllItems();
-    tipoEnvioCombo.addItem("Seleccionar...");
-    
-    // ✅ Usar el enum para llenar el combo
-    for (models.TipoEnvio tipo : models.TipoEnvio.values()) {
-        tipoEnvioCombo.addItem(tipo.getDescripcion());
+        this.parentFrame = frame;
     }
-}
+
+    /**
+     * Inicializa el combo de tipo de envío usando el enum
+     */
+    private void inicializarComboTipoEnvio() {
+        tipoEnvioCombo.removeAllItems();
+        tipoEnvioCombo.addItem("Seleccionar...");
+
+        // ✅ Usar el enum para llenar el combo
+        for (models.TipoEnvio tipo : models.TipoEnvio.values()) {
+            tipoEnvioCombo.addItem(tipo.getDescripcion());
+        }
+    }
 
 // 4. Método para inicializar el combo de SKU
     private void inicializarComboSKU() {
@@ -264,113 +260,77 @@ private void inicializarComboTipoEnvio() {
     }//GEN-LAST:event_skuProductoVentasComboActionPerformed
 
     private void registrarPedidoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarPedidoButtonActionPerformed
+
+        // Validar que el controller esté inicializado
         if (controller == null) {
-        javax.swing.JOptionPane.showMessageDialog(
-            this,
-            "Error: Controller no inicializado",
-            "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE
-        );
-        return;
-    }
-
-    String dni = dniField.getText();
-    String nombre = nombreField.getText();
-    String celular = celularField.getText();
-    String sku = (String) skuProductoVentasCombo.getSelectedItem();
-    int cantidad = (Integer) cantidadProductoVentasField.getValue();
-    String tipoEnvio = (String) tipoEnvioCombo.getSelectedItem(); // ✅ Obtener tipo de envío
-
-    boolean exitoso = controller.registrarPedido(dni, nombre, celular, sku, cantidad, tipoEnvio);
-
-    if (exitoso) {
-        javax.swing.JOptionPane.showMessageDialog(
-            this,
-            "Pedido registrado exitosamente",
-            "Éxito",
-            javax.swing.JOptionPane.INFORMATION_MESSAGE
-        );
-
-        // Limpiar campos
-        dniField.setText("");
-        nombreField.setText("");
-        celularField.setText("");
-        skuProductoVentasCombo.setSelectedIndex(0);
-        cantidadProductoVentasField.setValue(0);
-        tipoEnvioCombo.setSelectedIndex(0); // ✅ Resetear tipo de envío
-        dniField.requestFocus();
-
-        // Actualizar tablas
-        if (dashboardController != null) {
-            dashboardController.actualizarTablaVentas();
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Error: Controller no inicializado",
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+            return;
         }
-    } else {
-        javax.swing.JOptionPane.showMessageDialog(
-            this,
-            "Error al registrar el pedido. Verifica todos los campos.",
-            "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE
-        );
-    }
-    }
-    
-    // Obtener valores de los campos
-    String dni = dniField.getText();
-    String nombre = nombreField.getText();
-    String celular = celularField.getText();
-    String sku = (String) skuProductoVentasCombo.getSelectedItem();
-    int cantidad = (Integer) cantidadProductoVentasField.getValue();
-    
-    // Registrar pedido
-    boolean exitoso = controller.registrarPedido(dni, nombre, celular, sku, cantidad);
-    
-    if (exitoso) {
-        javax.swing.JOptionPane.showMessageDialog(
-            this,
-            "Pedido registrado exitosamente",
-            "Éxito",
-            javax.swing.JOptionPane.INFORMATION_MESSAGE
-        );
-        
-        // Limpiar campos
-        dniField.setText("");
-        nombreField.setText("");
-        celularField.setText("");
-        skuProductoVentasCombo.setSelectedIndex(0);
-        cantidadProductoVentasField.setValue(0);
-        
-        dniField.requestFocus();
-        
-        // Actualizar TODAS las tablas del dashboard
-        if (dashboardController != null) {
-            dashboardController.actualizarTablaVentas();       // ← NUEVO
-            dashboardController.actualizarTablaInventario();
-            dashboardController.actualizarTablaConteoInventario();
+
+        // Obtener valores de los campos
+        String dni = dniField.getText();
+        String nombre = nombreField.getText();
+        String celular = celularField.getText();
+        String sku = (String) skuProductoVentasCombo.getSelectedItem();
+        int cantidad = (Integer) cantidadProductoVentasField.getValue();
+        String tipoEnvio = (String) tipoEnvioCombo.getSelectedItem(); // ✅ Obtener tipo de envío
+
+        // Registrar pedido
+        boolean exitoso = controller.registrarPedido(dni, nombre, celular, sku, cantidad, tipoEnvio);
+
+        if (exitoso) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Pedido registrado exitosamente",
+                    "Éxito",
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE
+            );
+
+            // Limpiar campos
+            dniField.setText("");
+            nombreField.setText("");
+            celularField.setText("");
+            skuProductoVentasCombo.setSelectedIndex(0);
+            cantidadProductoVentasField.setValue(0);
+            tipoEnvioCombo.setSelectedIndex(0); // ✅ Resetear tipo de envío
+            dniField.requestFocus();
+
+            // Actualizar TODAS las tablas del dashboard
+            if (dashboardController != null) {
+                dashboardController.actualizarTablaVentas();
+                dashboardController.actualizarTablaInventario();
+                dashboardController.actualizarTablaConteoInventario();
+            }
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Error al registrar el pedido. Verifica:\n"
+                    + "- Todos los campos del cliente estén llenos\n"
+                    + "- Hayas seleccionado un producto\n"
+                    + "- La cantidad sea mayor a 0\n"
+                    + "- Haya stock disponible\n"
+                    + "- Hayas seleccionado un tipo de envío",
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
         }
-    } else {
-        javax.swing.JOptionPane.showMessageDialog(
-            this,
-            "Error al registrar el pedido. Verifica:\n" +
-            "- Todos los campos del cliente estén llenos\n" +
-            "- Hayas seleccionado un producto\n" +
-            "- La cantidad sea mayor a 0\n" +
-            "- Haya stock disponible",
-            "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE
-        );
-    }
     }//GEN-LAST:event_registrarPedidoButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
 
         // Cerrar la ventana padre
-    if (parentFrame != null) {
-        parentFrame.dispose();
-    } else {
-        // Si no hay parentFrame, intentar cerrar desde la ventana contenedora
-        javax.swing.SwingUtilities.getWindowAncestor(this).dispose();
-    }
+        if (parentFrame != null) {
+            parentFrame.dispose();
+        } else {
+            // Si no hay parentFrame, intentar cerrar desde la ventana contenedora
+            javax.swing.SwingUtilities.getWindowAncestor(this).dispose();
+        }
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void tipoEnvioComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tipoEnvioComboActionPerformed
