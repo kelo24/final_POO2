@@ -19,8 +19,8 @@ public class CreateProductView extends javax.swing.JInternalFrame {
 
     public CreateProductView() {
         initComponents();
-        controller = new controllers.CreateProductViewController();
-        controller.initialize();
+    controller = new controllers.CreateProductViewController();
+    controller.initialize();
     }
 
     public void setParentFrame(javax.swing.JFrame frame) {

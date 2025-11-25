@@ -5,11 +5,14 @@ import models.Cliente;
 import models.Producto;
 import repository.PedidoRepositorio;
 import repository.ProductoRepositorio;
+import factory.EntidadFactory;
+import Builder.PedidoBuilder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
  * AgregarPedidoViewController - Controlador para agregar pedidos
+ * Usa Factory + Builder para crear pedidos
  */
 public class AgregarPedidoViewController {
     
@@ -38,7 +41,7 @@ public class AgregarPedidoViewController {
     }
     
     /**
-     * Registra un nuevo pedido
+     * Registra un nuevo pedido usando Factory + Builder
      */
     public boolean registrarPedido(String dni, String nombre, String celular, 
                                     String sku, int cantidad) {
@@ -82,38 +85,28 @@ public class AgregarPedidoViewController {
             return false;
         }
         
-        // Crear el cliente
-        Cliente cliente = new Cliente(dni.trim(), nombre.trim(), celular.trim());
+        // PASO 1: Usar Factory para crear el cliente
+        Cliente cliente = EntidadFactory.crearCliente(dni.trim(), nombre.trim(), celular.trim());
         
-        // Crear el pedido
-        Pedido pedido = new Pedido(producto, cliente, cantidad);
-        
-        // Establecer fecha actual
+        // PASO 2: Usar Builder para construir el pedido paso a paso
+        String idPedido = "PED-" + System.currentTimeMillis();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        pedido.setFechaPedido(sdf.format(new Date()));
+        String fecha = sdf.format(new Date());
         
-        // Estado inicial: PENDIENTE (ya viene por defecto en el modelo)
+        Pedido pedido = new PedidoBuilder()
+            .setId(idPedido)
+            .setFecha(fecha)
+            .setProducto(producto)
+            .setCliente(cliente)
+            .setCantidad(cantidad)
+            .setEstado("PENDIENTE")
+            .build();
         
         // Guardar en el repositorio
         boolean guardado = pedidoRepository.save(pedido);
         
         if (guardado) {
-            System.out.println("Pedido registrado exitosamente");
-            
-            // Reducir stock del producto
-            producto.setStock(producto.getStock() - cantidad);
-            productoRepository.update(producto);
-            
-            // Registrar movimiento de salida en inventario
-            if (dashboardController != null) {
-                dashboardController.registrarMovimientoInventario(
-                    sku,
-                    producto.getNombre(),
-                    "SALIDA - PEDIDO",
-                    cantidad
-                );
-            }
-            
+            System.out.println("Pedido registrado exitosamente usando Factory + Builder Pattern");
             return true;
         } else {
             System.err.println("Error: No se pudo guardar el pedido");
