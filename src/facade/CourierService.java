@@ -13,9 +13,7 @@ public class CourierService {
 
     private static final String API_BASE_URL = "https://servicesweb.shalomcontrol.com/api/v1/web/rastrea";
 
-    /**
-     * Genera información de tracking para un envío
-     */
+    
     public InfoEnvio generarTracking(InfoEnvio envio) {
         if (envio == null) {
             envio = new InfoEnvio();
@@ -40,9 +38,6 @@ public class CourierService {
         return envio.getEstadoEnvio() != null ? envio.getEstadoEnvio() : "SIN REGISTRO";
     }
 
-    /**
-     * Actualiza el estado de un envío consultando la API de SHALOM
-     */
     public String actualizarEstadoDesdeShalom(InfoEnvio envio) {
         if (envio == null) {
             return "SIN INFORMACIÓN";
@@ -72,12 +67,7 @@ public class CourierService {
         }
     }
 
-    /**
-     * Actualiza el estado consultando la API de SHALOM (Método completo integrado)
-     * @param numero Número de tracking
-     * @param codigo Código de tracking
-     * @return Nuevo estado del envío
-     */
+ 
     public String actualizarEstadoShalom(String numero, String codigo)
             throws URISyntaxException, IOException, InterruptedException {
 

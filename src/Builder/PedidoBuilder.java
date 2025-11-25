@@ -47,9 +47,14 @@ public class PedidoBuilder {
         p.setPago(pg);
         return this;
     }
+    public PedidoBuilder setPrioritario(boolean prioritario) {
+    p.setPrioritario(prioritario); 
+    return this;
+}
 
 
     public Pedido build() {
         return this.p;
     }
+
 }

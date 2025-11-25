@@ -711,40 +711,35 @@ public class DashboardView extends javax.swing.JFrame {
     }//GEN-LAST:event_agregarpedidoButtonActionPerformed
 
     private void editarPedidoVentasButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarPedidoVentasButtonActionPerformed
-        // TODO add your handling code here:
-
         // Obtener fila seleccionada en la tabla de ventas
-        int filaSeleccionada = ventasTable.getSelectedRow();
-
-        if (filaSeleccionada == -1) {
-            javax.swing.JOptionPane.showMessageDialog(
-                    this,
-                    "Por favor, selecciona un pedido de la tabla para editar",
-                    "Aviso",
-                    javax.swing.JOptionPane.WARNING_MESSAGE
-            );
-            return;
-        }
-
-        // Obtener número de orden del pedido seleccionado
-        int nroOrden = (int) ventasTable.getValueAt(filaSeleccionada, 0);
-
-        // Obtener estado del pedido
-        String estado = (String) ventasTable.getValueAt(filaSeleccionada, 7);
-
-        // Validar que no sea un pedido cancelado
-        if (estado.equals("CANCELADO")) {
-            javax.swing.JOptionPane.showMessageDialog(
-                    this,
-                    "No se pueden editar pedidos cancelados",
-                    "Aviso",
-                    javax.swing.JOptionPane.WARNING_MESSAGE
-            );
-            return;
-        }
-
-        // Abrir la vista de editar pedido
-        controller.abrirEditarPedidoView(nroOrden);
+    int filaSeleccionada = ventasTable.getSelectedRow();
+    
+    if (filaSeleccionada == -1) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Por favor, selecciona un pedido de la tabla para editar",
+            "Aviso",
+            javax.swing.JOptionPane.WARNING_MESSAGE
+        );
+        return;
+    }
+    
+    // ✅ CORRECTO: Obtener número de orden (columna 0) como Integer
+    int nroOrden = (int) ventasTable.getValueAt(filaSeleccionada, 0);
+    
+    // Validar que el controller esté inicializado
+    if (controller == null) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Error: Controller no inicializado",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE
+        );
+        return;
+    }
+    
+    // Abrir la vista de edición de pedido
+    controller.abrirEditarPedidoView(nroOrden);
     }//GEN-LAST:event_editarPedidoVentasButtonActionPerformed
 
     private void cambiarEstadoVentasButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cambiarEstadoVentasButtonActionPerformed

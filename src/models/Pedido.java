@@ -3,8 +3,8 @@ package models;
 import java.io.Serializable;
 
 public class Pedido implements Serializable {
+        private static final long serialVersionUID = 1L;
     
-    // Attributes
     private String idPedido;
     private String fechaPedido;
     private int orden;
@@ -15,7 +15,7 @@ public class Pedido implements Serializable {
     private String estado = "PENDIENTE";
     private InfoEnvio envio;
     private InfoPago pago;
-    private String tipoEnvio = "Normal"; // ✅ REEMPLAZA a prioritario
+    private String tipoEnvio = "Normal"; 
     
     // Constructor
     public Pedido(){}
@@ -88,6 +88,10 @@ public class Pedido implements Serializable {
     public double calcularCostoEnvio() {
         TipoEnvio tipo = TipoEnvio.fromDescripcion(tipoEnvio);
         return tipo.calcularCosto(this);
+    }
+
+    public void setPrioritario(boolean prioritario) {
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
     
 }
