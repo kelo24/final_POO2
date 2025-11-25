@@ -838,6 +838,23 @@ public class DashboardView extends javax.swing.JFrame {
 
     private void updateShalomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateShalomActionPerformed
         // TODO add your handling code here:
+        
+        // Confirmar acción
+    int confirmar = javax.swing.JOptionPane.showConfirmDialog(
+        this,
+        "¿Deseas actualizar los estados de envío consultando la API de SHALOM?\n\n" +
+        "Esto consultará el estado de todos los pedidos confirmados\n" +
+        "que tengan información de tracking completa.\n\n" +
+        "El proceso puede tomar varios segundos.",
+        "Confirmar Actualización SHALOM",
+        javax.swing.JOptionPane.YES_NO_OPTION,
+        javax.swing.JOptionPane.QUESTION_MESSAGE
+    );
+    
+    if (confirmar == javax.swing.JOptionPane.YES_OPTION) {
+        // Llamar al método del controller
+        controller.actualizarEstadosShalom();
+    }
     }//GEN-LAST:event_updateShalomActionPerformed
 
     private void editarInfoLogisticaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarInfoLogisticaButtonActionPerformed

@@ -1,74 +1,53 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package facade;
 
 import Builder.PedidoBuilder;
-import strategy.*;
 import models.*;
-
+import repository.PedidoRepositorio;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SistemaLogisticoFacade {
 
-    
     private final List<Pedido> pedidos;
     private final InventarioService inventarioService;
     private final CourierService courierService;
     private final ReporteService reporteService;
+    private final PedidoRepositorio pedidoRepository;
 
-  
-    private final ContextoEnvio contextoEnvio;
-
-   
     public SistemaLogisticoFacade() {
         this.pedidos = new ArrayList<>();
         this.inventarioService = new InventarioService();
         this.courierService = new CourierService();
         this.reporteService = new ReporteService();
-        this.contextoEnvio = new ContextoEnvio();
+        this.pedidoRepository = new PedidoRepositorio();
     }
 
-   
-    public void seleccionarEstrategiaEnvio(EstrategiaEnvio estrategia) {
-        contextoEnvio.setEstrategia(estrategia);
-    }
-
-    public double calcularCostoEnvio(Pedido pedido) {
-        return contextoEnvio.calcularCosto(pedido);
-    }
-
-    public String estrategiaSeleccionada() {
-        return contextoEnvio.getNombreEstrategia();
-    }
-
+    // ========================================
+    // MÉTODOS DE GESTIÓN DE PEDIDOS
+    // ========================================
     
     public Pedido registrarPedido(
             String id,
-        String fecha,
-        Cliente cliente,
-        Producto producto,
-        int cantidad,
-        InfoEnvio envio,
-        InfoPago pago,
-        String tipoEnvio
+            String fecha,
+            Cliente cliente,
+            Producto producto,
+            int cantidad,
+            InfoEnvio envio,
+            InfoPago pago,
+            String tipoEnvio
     ) {
-
         Pedido pedido = new PedidoBuilder()
-            .setId(id)
-            .setFecha(fecha)
-            .setCliente(cliente)
-            .setProducto(producto)
-            .setCantidad(cantidad)
-            .setEnvio(envio)
-            .setPago(pago)
-            .setTipoEnvio(tipoEnvio) // ✅ Usar setTipoEnvio en lugar de setPrioritario
-            .setEstado("REGISTRADO")
-            .build();
+                .setId(id)
+                .setFecha(fecha)
+                .setCliente(cliente)
+                .setProducto(producto)
+                .setCantidad(cantidad)
+                .setEnvio(envio)
+                .setPago(pago)
+                .setTipoEnvio(tipoEnvio)
+                .setEstado("REGISTRADO")
+                .build();
 
- 
         pedidos.add(pedido);
         inventarioService.descontarStock(producto, cantidad);
 
@@ -77,74 +56,133 @@ public class SistemaLogisticoFacade {
 
     public void procesarDespacho(Pedido pedido) {
         pedido.setEstado("DESPACHADO");
-        courierService.generarTracking(pedido);
+        
+        // Generar tracking usando CourierService
+        InfoEnvio envio = courierService.generarTracking(pedido.getEnvio());
+        pedido.setEnvio(envio);
     }
 
-    public void actualizarEstadoTracking(Pedido pedido) {
-        courierService.actualizarEstado(pedido);
+    // ========================================
+    // MÉTODOS PARA ACTUALIZAR ESTADOS SHALOM
+    // ========================================
+    
+    /**
+     * Actualiza el estado de envío de un pedido consultando SHALOM
+     */
+    public String actualizarEstadoEnvioShalom(Pedido pedido) {
+        if (pedido == null || pedido.getEnvio() == null) {
+            return "SIN INFORMACIÓN";
+        }
+        
+        // Usar CourierService para consultar SHALOM (integrado)
+        String nuevoEstado = courierService.actualizarEstadoDesdeShalom(pedido.getEnvio());
+        
+        // Guardar cambios
+        pedidoRepository.update(pedido);
+        
+        return nuevoEstado;
+    }
+    
+    /**
+     * Actualiza todos los pedidos confirmados consultando SHALOM
+     */
+    public ResultadoActualizacionShalom actualizarTodosLosEstadosShalom() {
+        List<Pedido> pedidosConfirmados = pedidoRepository.findByEstado("CONFIRMADO");
+        pedidosConfirmados.addAll(pedidoRepository.findByEstado("CONFIRMADO SIN ADELANTO"));
+        
+        int actualizados = 0;
+        int sinTracking = 0;
+        int errores = 0;
+        
+        for (Pedido pedido : pedidosConfirmados) {
+            InfoEnvio envio = pedido.getEnvio();
+            
+            // Validar que tenga tracking completo
+            if (!courierService.tieneTrackingCompleto(envio)) {
+                sinTracking++;
+                continue;
+            }
+            
+            try {
+                // Actualizar estado desde SHALOM
+                String nuevoEstado = actualizarEstadoEnvioShalom(pedido);
+                
+                if (!nuevoEstado.equals("SIN INFORMACIÓN") && !nuevoEstado.equals("SIN REGISTRO")) {
+                    actualizados++;
+                } else {
+                    errores++;
+                }
+                
+                // Pausa para no saturar la API
+                Thread.sleep(500);
+                
+            } catch (InterruptedException e) {
+                errores++;
+                Thread.currentThread().interrupt();
+            } catch (Exception e) {
+                errores++;
+                System.err.println("Error al actualizar pedido: " + e.getMessage());
+            }
+        }
+        
+        return new ResultadoActualizacionShalom(actualizados, sinTracking, errores);
+    }
+    
+    /**
+     * Consulta el estado actual de un pedido (sin actualizar desde SHALOM)
+     */
+    public String consultarEstadoEnvio(Pedido pedido) {
+        return courierService.consultarEstado(pedido.getEnvio());
     }
 
-  
+    // ========================================
+    // MÉTODOS DE CONSULTA
+    // ========================================
+    
     public List<Pedido> obtenerPedidos() {
-        return pedidos;
+        return pedidoRepository.findAll();
     }
 
     public Pedido buscarPedidoPorId(String id) {
-        for (Pedido p : pedidos) {
-            if (p.getIdPedido().equals(id)) return p;
-        }
-        return null;
+        return pedidoRepository.findById(id);
     }
 
-    public String generarReporteGeneral() {
-        return reporteService.generarReporte(pedidos);
-    }
-
-  
-    private static class InventarioService {
-        public void descontarStock(Producto producto, int cantidad) {
-            if (producto != null) {
-                producto.setStock(producto.getStock() - cantidad);
-            }
+//    public String generarReporteGeneral() {
+//        List<Pedido> todosPedidos = obtenerPedidos();
+//        return reporteService.generarResumen(todosPedidos);
+//    }
+    
+    // ========================================
+    // CLASE AUXILIAR PARA RESULTADOS
+    // ========================================
+    
+    /**
+     * Clase para resultados de actualización SHALOM
+     */
+    public static class ResultadoActualizacionShalom {
+        private final int actualizados;
+        private final int sinTracking;
+        private final int errores;
+        
+        public ResultadoActualizacionShalom(int actualizados, int sinTracking, int errores) {
+            this.actualizados = actualizados;
+            this.sinTracking = sinTracking;
+            this.errores = errores;
         }
-    }
-
-   
-    private static class CourierService {
-
-        public void generarTracking(Pedido pedido) {
-            if (pedido.getEnvio() == null) pedido.setEnvio(new InfoEnvio());
-
-            pedido.getEnvio().setTransportadora("Shalom");
-            pedido.getEnvio().setnTracking("TRK-" + pedido.getIdPedido());
-            pedido.getEnvio().setEstado("En Camino");
-        }
-
-        public void actualizarEstado(Pedido pedido) {
-            if (pedido.getEnvio() != null) {
-                pedido.getEnvio().setEstado("Entregado");
-            }
-        }
-    }
-
-   
-    private static class ReporteService {
-
-        public String generarReporte(List<Pedido> pedidos) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("=== REPORTE LOGÍSTICO ===\n");
-            sb.append("Total de pedidos: ").append(pedidos.size()).append("\n\n");
-
-            for (Pedido p : pedidos) {
-                sb.append("ID: ").append(p.getIdPedido()).append("\n")
-                        .append("Cliente: ").append(p.getCliente().getNombre()).append("\n")
-                        .append("Producto: ").append(p.getProducto().getNombre()).append("\n")
-                        .append("Cantidad: ").append(p.getCantidad()).append("\n")
-                        .append("Estado: ").append(p.getEstado()).append("\n")
-                        .append("-------------------------\n");
-            }
-
-            return sb.toString();
+        
+        public int getActualizados() { return actualizados; }
+        public int getSinTracking() { return sinTracking; }
+        public int getErrores() { return errores; }
+        
+        @Override
+        public String toString() {
+            return String.format(
+                "Actualización completada:\n\n" +
+                "✓ Actualizados: %d\n" +
+                "⚠ Sin tracking: %d\n" +
+                "✗ Errores: %d",
+                actualizados, sinTracking, errores
+            );
         }
     }
 }

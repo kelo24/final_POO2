@@ -1,5 +1,6 @@
 package controllers;
 
+import facade.SistemaLogisticoFacade;
 import views.AgregarPedidoView;
 import views.CreateProductView;
 import views.DashboardView;
@@ -20,11 +21,14 @@ public class DashboardViewController {
     private DashboardView dashboardView;
     private ProductoRepositorio productoRepository;
     private MovimientoRepository movimientoRepository;
-
+private SistemaLogisticoFacade sistemaLogistico;
+    
     public void initialize() {
         homeController = HomeController.getInstance();
         productoRepository = new ProductoRepositorio();
         movimientoRepository = new MovimientoRepository();
+        sistemaLogistico = new SistemaLogisticoFacade();
+        
         System.out.println("DashboardViewController inicializado");
     }
 
@@ -570,4 +574,119 @@ public void abrirPaymentInfoView(int nroOrden) {
         System.out.println("Movimiento registrado exitosamente");
         return true;
     }
+    
+    /**
+     * Actualiza todos los estados de envío consultando la API de SHALOM
+     * ✅ Usa el Facade para simplificar la operación compleja
+     */
+    public void actualizarEstadosShalom() {
+        System.out.println("Iniciando actualización de estados SHALOM usando Facade...");
+        
+        // Mostrar diálogo de progreso
+        javax.swing.JDialog progressDialog = new javax.swing.JDialog();
+        progressDialog.setTitle("Actualizando estados SHALOM");
+        progressDialog.setModal(true);
+        progressDialog.setDefaultCloseOperation(javax.swing.JDialog.DO_NOTHING_ON_CLOSE);
+        
+        javax.swing.JProgressBar progressBar = new javax.swing.JProgressBar();
+        progressBar.setIndeterminate(true);
+        progressBar.setString("Consultando API de SHALOM...");
+        progressBar.setStringPainted(true);
+        
+        javax.swing.JPanel panel = new javax.swing.JPanel(new java.awt.BorderLayout(10, 10));
+        panel.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        panel.add(new javax.swing.JLabel("Actualizando estados de envío..."), java.awt.BorderLayout.NORTH);
+        panel.add(progressBar, java.awt.BorderLayout.CENTER);
+        
+        progressDialog.add(panel);
+        progressDialog.pack();
+        progressDialog.setLocationRelativeTo(dashboardView);
+        
+        // Ejecutar actualización en segundo plano
+        javax.swing.SwingWorker<SistemaLogisticoFacade.ResultadoActualizacionShalom, String> worker = 
+            new javax.swing.SwingWorker<SistemaLogisticoFacade.ResultadoActualizacionShalom, String>() {
+            
+            @Override
+            protected SistemaLogisticoFacade.ResultadoActualizacionShalom doInBackground() throws Exception {
+                publish("Consultando API de SHALOM...");
+                
+                // ✅ Usar el Facade (ya inicializado) - UNA SOLA LLAMADA SIMPLE
+                return sistemaLogistico.actualizarTodosLosEstadosShalom();
+            }
+            
+            @Override
+            protected void process(java.util.List<String> chunks) {
+                for (String msg : chunks) {
+                    progressBar.setString(msg);
+                }
+            }
+            
+            @Override
+            protected void done() {
+                progressDialog.dispose();
+                
+                try {
+                    // Obtener resultado
+                    SistemaLogisticoFacade.ResultadoActualizacionShalom resultado = get();
+                    
+                    // Actualizar tabla de logística
+                    actualizarTablaLogistica();
+                    
+                    // Mostrar resultado
+                    javax.swing.JOptionPane.showMessageDialog(
+                        dashboardView,
+                        resultado.toString(),
+                        "Actualización SHALOM Completada",
+                        javax.swing.JOptionPane.INFORMATION_MESSAGE
+                    );
+                    
+                    System.out.println("✅ Actualización completada: " + 
+                                     resultado.getActualizados() + " actualizados, " + 
+                                     resultado.getErrores() + " errores");
+                    
+                } catch (Exception e) {
+                    System.err.println("Error en actualización SHALOM: " + e.getMessage());
+                    e.printStackTrace();
+                    
+                    javax.swing.JOptionPane.showMessageDialog(
+                        dashboardView,
+                        "Error al actualizar estados:\n" + e.getMessage(),
+                        "Error",
+                        javax.swing.JOptionPane.ERROR_MESSAGE
+                    );
+                }
+            }
+        };
+        
+        worker.execute();
+        progressDialog.setVisible(true);
+    }
+    
+    /**
+     * ✅ Otros métodos que pueden usar el Facade para operaciones complejas
+     */
+    
+    /**
+     * Genera reporte general del sistema usando Facade
+     */
+//    public String generarReporteGeneral() {
+//        return sistemaLogistico.generarReporteGeneral();
+//    }
+    
+    /**
+     * Consulta el estado de un pedido específico usando Facade
+     */
+    public String consultarEstadoPedido(int nroOrden) {
+        repository.PedidoRepositorio pedidoRepo = new repository.PedidoRepositorio();
+        models.Pedido pedido = pedidoRepo.findByOrden(nroOrden);
+        
+        if (pedido != null) {
+            return sistemaLogistico.consultarEstadoEnvio(pedido);
+        }
+        return "Pedido no encontrado";
+    }
+
 }
+
+
+
