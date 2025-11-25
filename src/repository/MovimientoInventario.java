@@ -8,7 +8,6 @@ import java.util.Date;
 public class MovimientoInventario implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private static int contadorOrden = 0;
 
     private int nroOrden;
     private String fecha;
@@ -17,8 +16,8 @@ public class MovimientoInventario implements Serializable {
     private String movimiento; // ENTRADA, SALIDA, AJUSTE
     private int cantidad;
 
-    public MovimientoInventario(String sku, String producto, String movimiento, int cantidad) {
-        this.nroOrden = ++contadorOrden;
+    public MovimientoInventario(int nroOrden, String sku, String producto, String movimiento, int cantidad) {
+        this.nroOrden = nroOrden;
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         this.fecha = sdf.format(new Date());
         this.sku = sku;

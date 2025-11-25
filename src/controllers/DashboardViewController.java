@@ -220,11 +220,12 @@ public class DashboardViewController {
     public void registrarMovimientoInventario(String sku, String producto, String tipoMovimiento, int cantidad) {
         // Crear el movimiento
         MovimientoInventario movimiento = new MovimientoInventario(
-                sku,
-                producto,
-                tipoMovimiento,
-                cantidad
-        );
+            0,
+            sku,
+            producto,
+            tipoMovimiento,
+            cantidad
+    );
 
         // Guardar en el repositorio
         movimientoRepository.save(movimiento);
