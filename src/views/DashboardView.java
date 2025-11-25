@@ -15,7 +15,7 @@ public class DashboardView extends javax.swing.JFrame {
      * Creates new form DashboardView
      */
     private controllers.DashboardViewController controller;
-    private JDesktopPane desktop;
+    private JDesktopPane desktop; 
 
     public DashboardView() {
         initComponents();
