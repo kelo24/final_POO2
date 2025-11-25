@@ -29,14 +29,10 @@ public class DashboardView extends javax.swing.JFrame {
     public void cargarDatosIniciales() {
         System.out.println("Cargando datos iniciales del dashboard...");
 
-        // Cargar pedidos en tabla de ventas
         controller.actualizarTablaVentas();
-
-        // Cargar movimientos de inventario
         controller.actualizarTablaInventario();
-
-        // Cargar conteo de inventario (reportes)
         controller.actualizarTablaConteoInventario();
+        controller.actualizarTablaLogistica();
 
         // Cargar productos en el combo de SKU
         cargarProductosEnCombo();
@@ -282,6 +278,13 @@ public class DashboardView extends javax.swing.JFrame {
 
         System.out.println("Tabla de reportes inicializada");
     }
+    
+    /**
+ * Obtiene la tabla de logística
+ */
+public javax.swing.JTable getLogisticaTable() {
+    return logisticaTable; // Ajusta el nombre según tu componente
+}
 
     /**
      * This method is called from within the constructor to initialize the form.

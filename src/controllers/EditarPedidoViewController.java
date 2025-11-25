@@ -243,6 +243,7 @@ public class EditarPedidoViewController {
             if (dashboardController != null) {
                 dashboardController.actualizarTablaVentas();
                 dashboardController.actualizarTablaConteoInventario();
+                dashboardController.actualizarTablaLogistica();
             }
             
             return true;
