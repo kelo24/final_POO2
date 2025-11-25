@@ -140,7 +140,7 @@ private void cargarComboProductos() {
 
         jLabel17.setText("Cantidad");
 
-        registrarPedidoButton.setText("Registrar pedido");
+        registrarPedidoButton.setText("Modificar pedido");
         registrarPedidoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 registrarPedidoButtonActionPerformed(evt);
@@ -239,6 +239,79 @@ private void cargarComboProductos() {
 
     private void registrarPedidoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarPedidoButtonActionPerformed
         // TODO add your handling code here:
+        
+        // Validar que el controller esté inicializado
+    if (controller == null) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Error: Controller no inicializado",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE
+        );
+        return;
+    }
+    
+    // Validar que el pedido puede ser editado
+    if (!controller.puedeEditar()) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Este pedido no puede ser editado",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE
+        );
+        return;
+    }
+    
+    // Obtener datos del formulario
+    String dni = dniField.getText();
+    String nombre = nombreField.getText();
+    String celular = celularField.getText();
+    String sku = (String) skuEditarCombo.getSelectedItem();
+    int cantidad = (Integer) cantidadEditarProductoField.getValue();
+    
+    // PASO 1: Modificar datos del cliente
+    if (!controller.modificarCliente(dni, nombre, celular)) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Error al modificar los datos del cliente.\nVerifica que todos los campos estén completos.",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE
+        );
+        return;
+    }
+    
+    // PASO 2: Modificar producto y cantidad
+    if (!controller.modificarProducto(sku, cantidad)) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Error al modificar el producto.\nVerifica el stock disponible.",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE
+        );
+        return;
+    }
+    
+    // PASO 3: Guardar todos los cambios
+    if (controller.guardarCambios()) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Pedido editado exitosamente",
+            "Éxito",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE
+        );
+        
+        // Cerrar la ventana
+        if (parentFrame != null) {
+            parentFrame.dispose();
+        }
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Error al guardar los cambios del pedido",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE
+        );
+    }
 
     }//GEN-LAST:event_registrarPedidoButtonActionPerformed
 
