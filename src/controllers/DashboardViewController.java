@@ -685,6 +685,78 @@ public void abrirPaymentInfoView(int nroOrden) {
         }
         return "Pedido no encontrado";
     }
+    
+    /**
+ * Registra un movimiento de inventario usando el Facade
+ */
+public boolean registrarMovimientoInventario(String sku, String tipoMovimiento, int cantidad) {
+    // ✅ Usar el Facade para manejar el inventario
+    boolean exitoso = sistemaLogistico.ajustarInventario(sku, cantidad, tipoMovimiento);
+    
+    if (exitoso) {
+        // Registrar movimiento en el repositorio
+        Producto producto = productoRepository.findBySku(sku);
+        if (producto != null) {
+            MovimientoInventario movimiento = new MovimientoInventario(
+                0,
+                sku,
+                producto.getNombre(),
+                tipoMovimiento.toUpperCase(),
+                cantidad
+            );
+            movimientoRepository.save(movimiento);
+        }
+        
+        // Actualizar tablas
+        actualizarTablaInventario();
+        actualizarTablaConteoInventario();
+        
+        System.out.println("✅ Movimiento registrado usando Facade");
+        return true;
+    }
+    
+    return false;
+}
+
+/**
+ * Valida stock disponible usando el Facade
+ */
+public boolean validarStockDisponible(String sku, int cantidad) {
+    return sistemaLogistico.validarDisponibilidadStock(sku, cantidad);
+}
+
+/**
+ * Consulta stock actual usando el Facade
+ */
+public int consultarStockProducto(String sku) {
+    return sistemaLogistico.consultarStock(sku);
+}
+
+/**
+ * Genera reporte de productos con stock bajo
+ */
+public void generarReporteStockBajo(int umbral) {
+    List<Producto> productosBajo = sistemaLogistico.obtenerProductosStockBajo(umbral);
+    
+    // Mostrar resultados
+    StringBuilder mensaje = new StringBuilder();
+    mensaje.append("Productos con stock bajo (< ").append(umbral).append("):\n\n");
+    
+    for (Producto p : productosBajo) {
+        mensaje.append(String.format("• %s: %d unidades\n", p.getNombre(), p.getStock()));
+    }
+    
+    if (productosBajo.isEmpty()) {
+        mensaje.append("No hay productos con stock bajo");
+    }
+    
+    javax.swing.JOptionPane.showMessageDialog(
+        dashboardView,
+        mensaje.toString(),
+        "Reporte de Stock Bajo",
+        javax.swing.JOptionPane.INFORMATION_MESSAGE
+    );
+}
 
 }
 
