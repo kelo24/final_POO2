@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
-package repository;
+package views;
 
 /**
  *
@@ -13,13 +13,13 @@ public class CreateProductView extends javax.swing.JInternalFrame {
     /**
      * Creates new form CreateProductView
      */
-    private repository.CreateProductViewController controller;
-    private repository.DashboardViewController dashboardController;
+    private controllers.CreateProductViewController controller;
+    private controllers.DashboardViewController dashboardController;
     private javax.swing.JFrame parentFrame;
 
     public CreateProductView() {
         initComponents();
-        controller = new repository.CreateProductViewController();
+        controller = new controllers.CreateProductViewController();
         controller.initialize();
     }
 
@@ -27,7 +27,7 @@ public class CreateProductView extends javax.swing.JInternalFrame {
         this.parentFrame = frame;
     }
 
-    public void setDashboardController(repository.DashboardViewController dashboardController) {
+    public void setDashboardController(controllers.DashboardViewController dashboardController) {
     this.dashboardController = dashboardController;
     
     // Pasar también al CreateProductViewController
@@ -169,49 +169,52 @@ public class CreateProductView extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
 
         if (controller == null) {
-            javax.swing.JOptionPane.showMessageDialog(
-                    this,
-                    "Error: Controller no inicializado",
-                    "Error",
-                    javax.swing.JOptionPane.ERROR_MESSAGE
-            );
-            return;
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "Error: Controller no inicializado",
+                "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE
+        );
+        return;
+    }
+
+    String sku = skuInvField.getText();
+    String nombre = nombreInvField.getText();
+    String precio = precioInvField.getText();
+    int cantidad = (Integer) cantidadInvField2.getValue();
+
+    boolean exitoso = controller.registrarProducto(sku, nombre, precio, cantidad);
+
+    if (exitoso) {
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "Producto registrado exitosamente",
+                "Éxito",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE
+        );
+
+        skuInvField.setText("");
+        nombreInvField.setText("");
+        precioInvField.setText("");
+        cantidadInvField2.setValue(0);
+        skuInvField.requestFocus();
+
+        // Actualizar tabla de inventario
+        if (dashboardController != null) {
+            dashboardController.actualizarTablaInventario();
+            dashboardController.actualizarTablaConteoInventario();
+            // NUEVO: Actualizar combo de productos
+            dashboardController.actualizarComboProductos();
         }
 
-        String sku = skuInvField.getText();
-        String nombre = nombreInvField.getText();
-        String precio = precioInvField.getText();
-        int cantidad = (Integer) cantidadInvField2.getValue();
-
-        boolean exitoso = controller.registrarProducto(sku, nombre, precio, cantidad);
-
-        if (exitoso) {
-            javax.swing.JOptionPane.showMessageDialog(
-                    this,
-                    "Producto registrado exitosamente",
-                    "Éxito",
-                    javax.swing.JOptionPane.INFORMATION_MESSAGE
-            );
-
-            skuInvField.setText("");
-            nombreInvField.setText("");
-            precioInvField.setText("");
-            cantidadInvField2.setValue(0);
-            skuInvField.requestFocus();
-
-            // AGREGAR ESTAS LÍNEAS - Actualizar tabla de inventario
-            if (dashboardController != null) {
-                dashboardController.actualizarTablaInventario();
-            }
-
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(
-                    this,
-                    "Error al registrar el producto. Verifica que el SKU no exista.",
-                    "Error",
-                    javax.swing.JOptionPane.ERROR_MESSAGE
-            );
-        }
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "Error al registrar el producto. Verifica que el SKU no exista.",
+                "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE
+        );
+    }
     }//GEN-LAST:event_registrarProductoButtonActionPerformed
 
 

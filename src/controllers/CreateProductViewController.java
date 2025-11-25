@@ -1,6 +1,7 @@
-package repository;
+package controllers;
 
 import models.Producto;
+import repository.ProductoRepositorio;
 import repository.ProductoRepositorio;
 
 /**
@@ -8,7 +9,7 @@ import repository.ProductoRepositorio;
  */
 public class CreateProductViewController {
 
-    private repository.DashboardViewController dashboardController;
+    private controllers.DashboardViewController dashboardController;
     private ProductoRepositorio productoRepository;
 
     public void initialize() {
@@ -16,7 +17,7 @@ public class CreateProductViewController {
         System.out.println("CreateProductViewController inicializado");
     }
 
-    public void setDashboardController(repository.DashboardViewController controller) {
+    public void setDashboardController(controllers.DashboardViewController controller) {
         this.dashboardController = controller;
     }
 

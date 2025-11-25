@@ -1,16 +1,15 @@
-package repository;
+package controllers;
 
-import controllers.HomeController;
 import views.AgregarPedidoView;
-import repository.CreateProductView;
-import repository.DashboardView;
+import views.CreateProductView;
+import views.DashboardView;
 import models.Producto;
-import repository.MovimientoInventario;
 import repository.ProductoRepositorio;
 import repository.MovimientoRepository;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
+import repository.MovimientoInventario;
 
 /**
  * DashboardViewController - Controlador para la lógica de negocio del Dashboard
@@ -162,6 +161,15 @@ public class DashboardViewController {
         }
 
         System.out.println("Tabla de conteo actualizada con " + productos.size() + " productos");
+    }
+    
+    /**
+     * Actualiza el combo de productos en el dashboard
+     */
+    public void actualizarComboProductos() {
+        if (dashboardView != null) {
+            dashboardView.actualizarComboProductos();
+        }
     }
 
     /**

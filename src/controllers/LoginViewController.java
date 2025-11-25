@@ -1,7 +1,7 @@
 package controllers;
 
 import views.LoginView;
-import repository.DashboardView;
+import views.DashboardView;
 
 /**
  * LoginViewController - Controlador para la lógica de negocio del Login
@@ -69,6 +69,10 @@ public class LoginViewController {
         dashboard.initializeLogisticaTable();
         dashboard.initializeInventarioTable();
         dashboard.initializeReportesTable();
+        
+        // IMPORTANTE: Cargar datos iniciales después de inicializar las tablas
+        dashboard.cargarDatosIniciales();
+        
         dashboard.setVisible(true);
     }
     

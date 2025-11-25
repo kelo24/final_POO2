@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
-package repository;
+package views;
 
 import javax.swing.JDesktopPane;
 import javax.swing.table.DefaultTableModel;
@@ -16,53 +16,63 @@ public class DashboardView extends javax.swing.JFrame {
     /**
      * Creates new form DashboardView
      */
-    private repository.DashboardViewController controller;
+    private controllers.DashboardViewController controller;
     private JDesktopPane desktop;
 
     public DashboardView() {
         initComponents();
-        controller = new repository.DashboardViewController();
-        controller.initialize();
-        controller.setDashboardView(this);
-
-        // Cargar datos iniciales en las tablas
-        cargarDatosIniciales();
+    controller = new controllers.DashboardViewController();
+    controller.initialize();
+    controller.setDashboardView(this);
     }
 
-    // En DashboardView.java - AGREGAR ESTE MÉTODO
-    public javax.swing.JTable getInventarioTable() {
-        return inventarioTable;
-    }
+    
 
-    // Método para cargar datos iniciales
-    private void cargarDatosIniciales() {
-        // Cargar movimientos de inventario
-        controller.actualizarTablaInventario();
+    // Método PÚBLICO para cargar datos iniciales
+public void cargarDatosIniciales() {
+    System.out.println("Cargando datos iniciales del dashboard...");
+    
+    // Cargar movimientos de inventario
+    controller.actualizarTablaInventario();
+    
+    // Cargar conteo de inventario (reportes)
+    controller.actualizarTablaConteoInventario();
+    
+    // Cargar productos en el combo de SKU
+    cargarProductosEnCombo();
+    
+    System.out.println("Datos iniciales cargados");
+}
 
-        // Cargar conteo de inventario (reportes)
-        controller.actualizarTablaConteoInventario();
-
-        // Cargar productos en el combo de SKU
-        cargarProductosEnCombo();
-    }
+// Método PÚBLICO para actualizar el combo de productos
+public void actualizarComboProductos() {
+    cargarProductosEnCombo();
+}
 
 // Método para cargar productos en el combo
-    private void cargarProductosEnCombo() {
-        skuInvCombo.removeAllItems();
-        skuInvCombo.addItem("Seleccionar...");
-
-        // Obtener productos del repositorio
-        repository.ProductoRepositorio productoRepo = new repository.ProductoRepositorio();
-        java.util.List<models.Producto> productos = productoRepo.findAll();
-
-        for (models.Producto p : productos) {
-            skuInvCombo.addItem(p.getSku());
-        }
+private void cargarProductosEnCombo() {
+    skuInvCombo.removeAllItems();
+    skuInvCombo.addItem("Seleccionar...");
+    
+    // Obtener productos del repositorio
+    repository.ProductoRepositorio productoRepo = new repository.ProductoRepositorio();
+    java.util.List<models.Producto> productos = productoRepo.findAll();
+    
+    for (models.Producto p : productos) {
+        skuInvCombo.addItem(p.getSku());
     }
+    
+    System.out.println("Productos cargados en combo: " + productos.size());
+}
 
 // Método público para recargar datos (llamar desde otras vistas)
-    public void recargarDatos() {
-        cargarDatosIniciales();
+public void recargarDatos() {
+    cargarDatosIniciales();
+}
+
+
+    public javax.swing.JTable getInventarioTable() {
+        return inventarioTable;
     }
 
     public javax.swing.JTable getConteoTable() {
@@ -70,7 +80,7 @@ public class DashboardView extends javax.swing.JFrame {
     }
 
     // Agregar este método para establecer el controller
-    public void setController(repository.DashboardViewController controller) {
+    public void setController(controllers.DashboardViewController controller) {
         this.controller = controller;
     }
 
