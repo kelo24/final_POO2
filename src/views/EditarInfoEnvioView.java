@@ -13,8 +13,58 @@ public class EditarInfoEnvioView extends javax.swing.JInternalFrame {
     /**
      * Creates new form EditarInfoEnvíoView
      */
+    private controllers.EditarInfoEnvioViewController controller;
+    private controllers.DashboardViewController dashboardController;
+    private javax.swing.JFrame parentFrame;
+
     public EditarInfoEnvioView() {
         initComponents();
+        controller = new controllers.EditarInfoEnvioViewController();
+        controller.initialize();
+    }
+
+    /**
+     * Establece el frame padre para poder cerrarlo
+     */
+    public void setParentFrame(javax.swing.JFrame frame) {
+        this.parentFrame = frame;
+    }
+
+    /**
+     * Establece el dashboard controller
+     */
+    public void setDashboardController(controllers.DashboardViewController dashboardController) {
+        this.dashboardController = dashboardController;
+
+        if (controller != null) {
+            controller.setDashboardController(dashboardController);
+        }
+    }
+
+    /**
+     * Carga un pedido para editar su información de envío
+     */
+    public void cargarPedido(int nroOrden) {
+        if (controller.cargarPedido(nroOrden)) {
+            models.Pedido pedido = controller.getPedidoActual();
+            models.InfoEnvio envio = pedido.getEnvio();
+
+            // Cargar información de envío (dirección)
+            if (envio != null) {
+                depField.setText(envio.getDepartamento() != null ? envio.getDepartamento() : "");
+                provField.setText(envio.getProvincia() != null ? envio.getProvincia() : "");
+                distField.setText(envio.getDistrito() != null ? envio.getDistrito() : "");
+                dirField.setText(envio.getDireccion() != null ? envio.getDireccion() : "");
+
+                // Cargar información de tracking
+                transField.setText(envio.getTransportadora() != null ? envio.getTransportadora() : "");
+                sucField.setText(envio.getSucursal() != null ? envio.getSucursal() : "");
+                ntrackField.setText(envio.getnTracking() != null ? envio.getnTracking() : "");
+                ctrackField.setText(envio.getcTracking() != null ? envio.getcTracking() : "");
+            }
+
+            System.out.println("Información de envío cargada en la vista");
+        }
     }
 
     /**
@@ -194,10 +244,81 @@ public class EditarInfoEnvioView extends javax.swing.JInternalFrame {
 
     private void updateInfoEnvioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateInfoEnvioButtonActionPerformed
 
+        if (controller == null) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Error: Controller no inicializado",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE
+        );
+        return;
+    }
+    
+    // Validar que el pedido puede editar info de envío
+    if (!controller.puedeEditarEnvio()) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Este pedido no puede editar su información de envío",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE
+        );
+        return;
+    }
+    
+    // Obtener datos del formulario
+    String departamento = depField.getText();
+    String provincia = provField.getText();
+    String distrito = distField.getText();
+    String direccion = dirField.getText();
+    
+    String transportadora = transField.getText();
+    String sucursal = sucField.getText();
+    String nroTracking = ntrackField.getText();
+    String codTracking = ctrackField.getText();
+    
+    // Actualizar información de envío
+    if (!controller.actualizarInfoEnvio(departamento, provincia, distrito, direccion)) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Error al actualizar la información de envío.\nVerifica que todos los campos estén completos.",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE
+        );
+        return;
+    }
+    
+    // Actualizar información de tracking
+    controller.actualizarInfoTracking(transportadora, sucursal, nroTracking, codTracking);
+    
+    // Guardar cambios
+    if (controller.guardarCambios()) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Información de envío actualizada exitosamente",
+            "Éxito",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE
+        );
+        
+        // Cerrar la ventana
+        if (parentFrame != null) {
+            parentFrame.dispose();
+        }
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Error al guardar la información de envío",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE
+        );
+    }
     }//GEN-LAST:event_updateInfoEnvioButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
+        
+        if (parentFrame != null) {
+        parentFrame.dispose();
+    }
     }//GEN-LAST:event_backButtonActionPerformed
 
 
