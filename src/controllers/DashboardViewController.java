@@ -102,7 +102,94 @@ public class DashboardViewController {
      */
     public boolean cambiarEstadoPedido(int nroOrden, String nuevoEstado) {
         System.out.println("Cambiando estado del pedido " + nroOrden + " a: " + nuevoEstado);
-        return true;
+    
+    // Buscar el pedido
+    repository.PedidoRepositorio pedidoRepo = new repository.PedidoRepositorio();
+    models.Pedido pedido = pedidoRepo.findByOrden(nroOrden);
+    
+    if (pedido == null) {
+        System.err.println("Error: Pedido no encontrado");
+        return false;
+    }
+    
+    String estadoAnterior = pedido.getEstado();
+    
+    // ✅ LÓGICA SEGÚN EL NUEVO ESTADO
+    
+    // 1. Si cambia a CONFIRMADO o CONFIRMADO SIN ADELANTO → Descontar stock
+    if (estadoAnterior.equals("PENDIENTE") && 
+        (nuevoEstado.equals("CONFIRMADO") || nuevoEstado.equals("CONFIRMADO SIN ADELANTO"))) {
+        
+        models.Producto producto = pedido.getProducto();
+        int cantidad = pedido.getCantidad();
+        
+        // Validar stock disponible
+        if (producto.getStock() < cantidad) {
+            System.err.println("Error: Stock insuficiente para confirmar el pedido");
+            System.err.println("Stock actual: " + producto.getStock() + ", Cantidad requerida: " + cantidad);
+            return false;
+        }
+        
+        // Descontar stock
+        producto.setStock(producto.getStock() - cantidad);
+        productoRepository.update(producto);
+        
+        // Registrar movimiento de salida
+        String tipoMovimiento = nuevoEstado.equals("CONFIRMADO") 
+            ? "SALIDA - PEDIDO CONFIRMADO" 
+            : "SALIDA - CONFIRMADO SIN ADELANTO";
+            
+        registrarMovimientoInventario(
+            producto.getSku(),
+            producto.getNombre(),
+            tipoMovimiento,
+            cantidad
+        );
+        
+        System.out.println("✅ Stock descontado: " + cantidad + " unidades de " + producto.getNombre());
+    }
+    
+    // 2. Si cambia a CANCELADO desde CONFIRMADO → Devolver stock
+    if ((estadoAnterior.equals("CONFIRMADO") || estadoAnterior.equals("CONFIRMADO SIN ADELANTO")) 
+        && nuevoEstado.equals("CANCELADO")) {
+        
+        models.Producto producto = pedido.getProducto();
+        int cantidad = pedido.getCantidad();
+        
+        // Devolver stock
+        producto.setStock(producto.getStock() + cantidad);
+        productoRepository.update(producto);
+        
+        // Registrar movimiento de ingreso (devolución)
+        registrarMovimientoInventario(
+            producto.getSku(),
+            producto.getNombre(),
+            "INGRESO - PEDIDO CANCELADO",
+            cantidad
+        );
+        
+        System.out.println("✅ Stock devuelto: " + cantidad + " unidades de " + producto.getNombre());
+    }
+    
+    // 3. Si cambia a CANCELADO desde PENDIENTE → No hacer nada con el stock
+    if (estadoAnterior.equals("PENDIENTE") && nuevoEstado.equals("CANCELADO")) {
+        System.out.println("Pedido cancelado desde PENDIENTE - Sin cambios en stock");
+    }
+    
+    // Cambiar el estado del pedido
+    pedido.setEstado(nuevoEstado);
+    
+    // Guardar cambios
+    boolean actualizado = pedidoRepo.update(pedido);
+    
+    if (actualizado) {
+        // Actualizar las tablas en la vista
+        actualizarTablaVentas();
+        actualizarTablaConteoInventario();
+        System.out.println("✅ Estado actualizado exitosamente a: " + nuevoEstado);
+    }
+    
+    return actualizado;
     }
 
     /**

@@ -1,10 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
+
 package views;
 
 import javax.swing.JDesktopPane;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -24,6 +22,7 @@ public class DashboardView extends javax.swing.JFrame {
         controller = new controllers.DashboardViewController();
         controller.initialize();
         controller.setDashboardView(this);
+        inicializarComboEstados();
     }
 
 // Método PÚBLICO para cargar datos iniciales
@@ -62,6 +61,21 @@ public class DashboardView extends javax.swing.JFrame {
 
         System.out.println("Combo de movimientos inicializado");
     }
+    
+    private void inicializarComboEstados() {
+    // Limpiar el combo
+    estadoVentasCombo.removeAllItems();
+    
+    // Agregar opción por defecto
+    estadoVentasCombo.addItem("Seleccionar...");
+    
+    // Agregar todos los estados
+    for (models.EstadoPedido estado : models.EstadoPedido.values()) {
+        estadoVentasCombo.addItem(estado.getDescripcion());
+    }
+    
+    System.out.println("ComboBox de estados inicializado con " + models.EstadoPedido.values().length + " estados");
+}
 
 // Método para cargar productos en el combo
     private void cargarProductosEnCombo() {
@@ -691,6 +705,87 @@ public class DashboardView extends javax.swing.JFrame {
 
     private void cambiarEstadoVentasButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cambiarEstadoVentasButtonActionPerformed
         // TODO add your handling code here:
+        
+        // Obtener fila seleccionada en la tabla de ventas
+    int filaSeleccionada = ventasTable.getSelectedRow();
+    
+    if (filaSeleccionada == -1) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Por favor, selecciona un pedido de la tabla",
+            "Aviso",
+            JOptionPane.WARNING_MESSAGE
+        );
+        return;
+    }
+    
+    // Obtener número de orden
+    int nroOrden = (int) ventasTable.getValueAt(filaSeleccionada, 0);
+    
+    // Obtener nuevo estado del combo
+    String nuevoEstado = (String) estadoVentasCombo.getSelectedItem();
+    
+    if (nuevoEstado == null || nuevoEstado.equals("Seleccionar...")) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Por favor, selecciona un estado válido",
+            "Aviso",
+            JOptionPane.WARNING_MESSAGE
+        );
+        return;
+    }
+    
+    // Obtener estado actual del pedido
+    String estadoActual = (String) ventasTable.getValueAt(filaSeleccionada, 7);
+    
+    // Validar que no se seleccione el mismo estado
+    if (estadoActual.equals(nuevoEstado)) {
+        JOptionPane.showMessageDialog(
+            this,
+            "El pedido ya tiene ese estado",
+            "Aviso",
+            JOptionPane.WARNING_MESSAGE
+        );
+        return;
+    }
+    
+    // Confirmar el cambio
+    int confirmar = JOptionPane.showConfirmDialog(
+        this,
+        "¿Estás seguro de cambiar el estado del pedido #" + nroOrden + "\n" +
+        "De: " + estadoActual + "\n" +
+        "A: " + nuevoEstado + "?",
+        "Confirmar cambio de estado",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.QUESTION_MESSAGE
+    );
+    
+    if (confirmar != JOptionPane.YES_OPTION) {
+        return;
+    }
+    
+    // Llamar al controller para cambiar el estado
+    boolean exitoso = controller.cambiarEstadoPedido(nroOrden, nuevoEstado);
+    
+    if (exitoso) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Estado actualizado exitosamente",
+            "Éxito",
+            JOptionPane.INFORMATION_MESSAGE
+        );
+        
+        // Resetear combo
+        estadoVentasCombo.setSelectedIndex(0);
+    } else {
+        JOptionPane.showMessageDialog(
+            this,
+            "Error al actualizar el estado.\n" +
+            "Verifica que haya stock suficiente si estás confirmando un pedido.",
+            "Error",
+            JOptionPane.ERROR_MESSAGE
+        );
+    }
     }//GEN-LAST:event_cambiarEstadoVentasButtonActionPerformed
 
     private void salirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirButtonActionPerformed

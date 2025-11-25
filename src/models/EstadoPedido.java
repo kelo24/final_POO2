@@ -1,15 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package models;
 
-
 public enum EstadoPedido {
-    REGISTRADO,
-    PREPARANDO,
-    DESPACHADO,
-    EN_CAMINO,
-    ENTREGADO,
-    CANCELADO
+    PENDIENTE("PENDIENTE"),
+    CONFIRMADO("CONFIRMADO"),
+    CONFIRMADO_SIN_ADELANTO("CONFIRMADO SIN ADELANTO"),
+    CANCELADO("CANCELADO");
+    
+    private final String descripcion;
+    
+    EstadoPedido(String descripcion) {
+        this.descripcion = descripcion;
+    }
+    
+    public String getDescripcion() {
+        return descripcion;
+    }
+    
+    @Override
+    public String toString() {
+        return descripcion;
+    }
 }
