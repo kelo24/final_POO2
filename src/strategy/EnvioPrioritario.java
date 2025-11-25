@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package strategy;
 
 import models.Pedido;
@@ -10,7 +6,11 @@ public class EnvioPrioritario implements EstrategiaEnvio {
 
     @Override
     public double calcularCosto(Pedido pedido) {
-        return 20.0 + (pedido.isPrioritario() ? 5.0 : 0);
+        
+        double costoBase = 20.0;
+        boolean esPrioritario = pedido.getTipoEnvio() != null && 
+                               pedido.getTipoEnvio().equals("Prioritario");
+        return costoBase + (esPrioritario ? 5.0 : 0);
     }
 
     @Override
@@ -18,4 +18,3 @@ public class EnvioPrioritario implements EstrategiaEnvio {
         return "Envío Prioritario";
     }
 }
-

@@ -1,4 +1,3 @@
-
 package views;
 
 /**
@@ -10,36 +9,50 @@ public class EditarPedidoView extends javax.swing.JInternalFrame {
     /**
      * Creates new form EditarPedidoView
      */
-    
     private controllers.EditarPedidoViewController controller;
-private controllers.DashboardViewController dashboardController;
-private javax.swing.JFrame parentFrame;
-    
+    private controllers.DashboardViewController dashboardController;
+    private javax.swing.JFrame parentFrame;
+
     public EditarPedidoView() {
         initComponents();
-    controller = new controllers.EditarPedidoViewController();
-    controller.initialize();
+        controller = new controllers.EditarPedidoViewController();
+        controller.initialize();
+        
+        inicializarComboTipoEnvio();
     }
-    
+
     /**
- * Establece el frame padre para poder cerrarlo
- */
-public void setParentFrame(javax.swing.JFrame frame) {
-    this.parentFrame = frame;
-}
+     * Establece el frame padre para poder cerrarlo
+     */
+    public void setParentFrame(javax.swing.JFrame frame) {
+        this.parentFrame = frame;
+    }
 
-/**
- * Establece el dashboard controller
- */
-public void setDashboardController(controllers.DashboardViewController dashboardController) {
-    this.dashboardController = dashboardController;
+    /**
+     * Establece el dashboard controller
+     */
+    public void setDashboardController(controllers.DashboardViewController dashboardController) {
+        this.dashboardController = dashboardController;
+
+        if (controller != null) {
+            controller.setDashboardController(dashboardController);
+        }
+    }
     
-    if (controller != null) {
-        controller.setDashboardController(dashboardController);
+/**
+ * Inicializa el combo de tipo de envío usando el enum
+ */
+private void inicializarComboTipoEnvio() {
+    tipoEnvioCombo.removeAllItems();
+    tipoEnvioCombo.addItem("Seleccionar...");
+    
+    // ✅ Usar el enum para llenar el combo
+    for (models.TipoEnvio tipo : models.TipoEnvio.values()) {
+        tipoEnvioCombo.addItem(tipo.getDescripcion());
     }
 }
 
-/**
+    /**
  * Carga un pedido para editar
  */
 public void cargarPedido(int nroOrden) {
@@ -60,22 +73,28 @@ public void cargarPedido(int nroOrden) {
         // Cargar cantidad
         cantidadEditarProductoField.setValue(pedido.getCantidad());
         
-        System.out.println("Pedido cargado en la vista para editar");
+        // ✅ Cargar tipo de envío
+        String tipoEnvio = pedido.getTipoEnvio();
+        if (tipoEnvio != null && !tipoEnvio.isEmpty()) {
+            tipoEnvioCombo.setSelectedItem(tipoEnvio);
+        }
+        
+        System.out.println("Pedido #" + nroOrden + " cargado en la vista para editar");
     }
 }
 
-/**
- * Carga los productos en el combo
- */
-private void cargarComboProductos() {
-    skuEditarCombo.removeAllItems();
-    skuEditarCombo.addItem("Seleccionar...");
-    
-    java.util.List<models.Producto> productos = controller.obtenerProductos();
-    for (models.Producto p : productos) {
-        skuEditarCombo.addItem(p.getSku());
+    /**
+     * Carga los productos en el combo
+     */
+    private void cargarComboProductos() {
+        skuEditarCombo.removeAllItems();
+        skuEditarCombo.addItem("Seleccionar...");
+
+        java.util.List<models.Producto> productos = controller.obtenerProductos();
+        for (models.Producto p : productos) {
+            skuEditarCombo.addItem(p.getSku());
+        }
     }
-}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -256,79 +275,80 @@ private void cargarComboProductos() {
 
     private void registrarPedidoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarPedidoButtonActionPerformed
         // TODO add your handling code here:
-        
+
         // Validar que el controller esté inicializado
-    if (controller == null) {
-        javax.swing.JOptionPane.showMessageDialog(
-            this,
-            "Error: Controller no inicializado",
-            "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE
-        );
-        return;
-    }
-    
-    // Validar que el pedido puede ser editado
-    if (!controller.puedeEditar()) {
-        javax.swing.JOptionPane.showMessageDialog(
-            this,
-            "Este pedido no puede ser editado",
-            "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE
-        );
-        return;
-    }
-    
-    // Obtener datos del formulario
-    String dni = dniField.getText();
-    String nombre = nombreField.getText();
-    String celular = celularField.getText();
-    String sku = (String) skuEditarCombo.getSelectedItem();
-    int cantidad = (Integer) cantidadEditarProductoField.getValue();
-    
-    // PASO 1: Modificar datos del cliente
-    if (!controller.modificarCliente(dni, nombre, celular)) {
-        javax.swing.JOptionPane.showMessageDialog(
-            this,
-            "Error al modificar los datos del cliente.\nVerifica que todos los campos estén completos.",
-            "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE
-        );
-        return;
-    }
-    
-    // PASO 2: Modificar producto y cantidad
-    if (!controller.modificarProducto(sku, cantidad)) {
-        javax.swing.JOptionPane.showMessageDialog(
-            this,
-            "Error al modificar el producto.\nVerifica el stock disponible.",
-            "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE
-        );
-        return;
-    }
-    
-    // PASO 3: Guardar todos los cambios
-    if (controller.guardarCambios()) {
-        javax.swing.JOptionPane.showMessageDialog(
-            this,
-            "Pedido editado exitosamente",
-            "Éxito",
-            javax.swing.JOptionPane.INFORMATION_MESSAGE
-        );
-        
-        // Cerrar la ventana
-        if (parentFrame != null) {
-            parentFrame.dispose();
+        if (controller == null) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Error: Controller no inicializado",
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+            return;
         }
-    } else {
-        javax.swing.JOptionPane.showMessageDialog(
-            this,
-            "Error al guardar los cambios del pedido",
-            "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE
-        );
-    }
+
+        // Validar que el pedido puede ser editado
+        if (!controller.puedeEditar()) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Este pedido no puede ser editado",
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
+        // Obtener datos del formulario
+        String dni = dniField.getText();
+        String nombre = nombreField.getText();
+        String celular = celularField.getText();
+        String sku = (String) skuEditarCombo.getSelectedItem();
+        int cantidad = (Integer) cantidadEditarProductoField.getValue();
+        String tipoEnvio = (String) tipoEnvioCombo.getSelectedItem();
+
+        // PASO 1: Modificar datos del cliente
+        if (!controller.modificarCliente(dni, nombre, celular)) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Error al modificar los datos del cliente.\nVerifica que todos los campos estén completos.",
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
+        // PASO 2: Modificar producto y cantidad
+        if (!controller.modificarProducto(sku, cantidad)) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Error al modificar el producto.\nVerifica el stock disponible.",
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
+        // PASO 3: Guardar todos los cambios
+        if (controller.guardarCambios(tipoEnvio)) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Pedido editado exitosamente",
+                    "Éxito",
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE
+            );
+
+            // Cerrar la ventana
+            if (parentFrame != null) {
+                parentFrame.dispose();
+            }
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Error al guardar los cambios del pedido",
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+        }
 
     }//GEN-LAST:event_registrarPedidoButtonActionPerformed
 

@@ -225,13 +225,41 @@ public class EditarPedidoViewController {
     }
     
     /**
+ * Modifica el tipo de envío del pedido
+ */
+public boolean modificarTipoEnvio(String nuevoTipoEnvio) {
+    if (pedidoActual == null) {
+        System.err.println("Error: No hay pedido cargado");
+        return false;
+    }
+    
+    // Validar tipo de envío
+    if (nuevoTipoEnvio == null || nuevoTipoEnvio.trim().isEmpty() || 
+        nuevoTipoEnvio.equals("Seleccionar...")) {
+        System.err.println("Error: Debe seleccionar un tipo de envío");
+        return false;
+    }
+    
+    // Actualizar tipo de envío
+    pedidoActual.setTipoEnvio(nuevoTipoEnvio);
+    
+    System.out.println("Tipo de envío actualizado a: " + nuevoTipoEnvio);
+    return true;
+}
+    
+    /**
      * Guarda todos los cambios del pedido
      */
-    public boolean guardarCambios() {
+    public boolean guardarCambios(String tipoEnvio) {
         if (pedidoActual == null) {
             System.err.println("Error: No hay pedido cargado");
             return false;
         }
+        
+        // ✅ Modificar tipo de envío
+    if (!modificarTipoEnvio(tipoEnvio)) {
+        return false;
+    }
         
         // Guardar en el repositorio
         boolean actualizado = pedidoRepository.update(pedidoActual);

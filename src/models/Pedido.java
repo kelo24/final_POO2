@@ -2,7 +2,6 @@ package models;
 
 import java.io.Serializable;
 
-
 public class Pedido implements Serializable {
     
     // Attributes
@@ -14,9 +13,9 @@ public class Pedido implements Serializable {
     private int cantidad;
     private double precio;
     private String estado = "PENDIENTE";
-    private boolean prioritario;
     private InfoEnvio envio;
     private InfoPago pago;
+    private String tipoEnvio = "Normal"; // ✅ REEMPLAZA a prioritario
     
     // Constructor
     public Pedido(){}
@@ -34,7 +33,6 @@ public class Pedido implements Serializable {
     public void setFechaPedido(String f){this.fechaPedido=f;}
     public int getOrden(){return orden;}
     public void setOrden(int o){this.orden=o;}
-
     public Producto getProducto(){return producto;}
     public void setProducto(Producto p){this.producto = p;}
     public Cliente getCliente(){return cliente;}
@@ -50,12 +48,19 @@ public class Pedido implements Serializable {
     public void setPrecio(double p){this.precio = p;}
     public String getEstado(){return estado;}
     public void setEstado(String e){this.estado = e;}
-    public boolean isPrioritario(){return prioritario;}
-    public void setPrioritario(boolean p){this.prioritario = p;}
+    
+    // ❌ ELIMINAR estos métodos:
+    // public boolean isPrioritario(){return prioritario;}
+    // public void setPrioritario(boolean p){this.prioritario = p;}
+    
     public InfoEnvio getEnvio(){return envio;}
     public void setEnvio(InfoEnvio e){this.envio = e;}
     public InfoPago getPago(){return pago;}
     public void setPago(InfoPago p){this.pago = p;}
+    
+    // ✅ Getter y Setter para tipoEnvio
+    public String getTipoEnvio(){return tipoEnvio;}
+    public void setTipoEnvio(String t){this.tipoEnvio = t;}
 
     public void cambiarInfoEnvio(String dep,String prov,String dist,String dir){
         if(envio == null) envio = new InfoEnvio();
@@ -64,6 +69,7 @@ public class Pedido implements Serializable {
         envio.setDistrito(dist);
         envio.setDireccion(dir);
     }
+    
     public void cambiarEstadoPedido(String nuevo){this.estado = nuevo;}
     
     public void cambiarInfoTracking(String trans,String suc,String nTr,String cTr){
@@ -73,7 +79,15 @@ public class Pedido implements Serializable {
         envio.setnTracking(nTr);
         envio.setcTracking(cTr);
     }
+    
     public void cambiarEstadoTracking(String nuevo){
         if(envio != null) envio.setEstado(nuevo);
     }
+    
+    // ✅ Calcular costo de envío usando Strategy
+    public double calcularCostoEnvio() {
+        TipoEnvio tipo = TipoEnvio.fromDescripcion(tipoEnvio);
+        return tipo.calcularCosto(this);
+    }
+    
 }

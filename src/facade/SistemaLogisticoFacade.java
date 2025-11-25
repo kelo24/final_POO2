@@ -5,7 +5,6 @@
 package facade;
 
 import Builder.PedidoBuilder;
-import factory.EntidadFactory;
 import strategy.*;
 import models.*;
 
@@ -48,30 +47,29 @@ public class SistemaLogisticoFacade {
     
     public Pedido registrarPedido(
             String id,
-            String fecha,
-            Cliente cliente,
-            Producto producto,
-            int cantidad,
-            InfoEnvio envio,
-            InfoPago pago,
-            boolean prioritario
+        String fecha,
+        Cliente cliente,
+        Producto producto,
+        int cantidad,
+        InfoEnvio envio,
+        InfoPago pago,
+        String tipoEnvio
     ) {
 
         Pedido pedido = new PedidoBuilder()
-                .setId(id)
-                .setFecha(fecha)
-                .setCliente(cliente)
-                .setProducto(producto)
-                .setCantidad(cantidad)
-                .setEnvio(envio)
-                .setPago(pago)
-                .setPrioritario(prioritario)
-                .setEstado("REGISTRADO")
-                .build();
+            .setId(id)
+            .setFecha(fecha)
+            .setCliente(cliente)
+            .setProducto(producto)
+            .setCantidad(cantidad)
+            .setEnvio(envio)
+            .setPago(pago)
+            .setTipoEnvio(tipoEnvio) // ✅ Usar setTipoEnvio en lugar de setPrioritario
+            .setEstado("REGISTRADO")
+            .build();
 
  
         pedidos.add(pedido);
-
         inventarioService.descontarStock(producto, cantidad);
 
         return pedido;

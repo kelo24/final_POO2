@@ -134,15 +134,16 @@ public class DashboardView extends javax.swing.JFrame {
     public void initializeVentasTable() {
         // Definir las columnas según tu imagen
         String[] columnNames = {
-            "Nro Orden",
-            "Fecha",
-            "DNI",
-            "Nombre",
-            "Producto",
-            "Cantidad",
-            "Precio final",
-            "ESTADO"
-        };
+        "Nro Orden",
+        "Fecha",
+        "DNI",
+        "Nombre",
+        "Producto",
+        "Cantidad",
+        "Tipo de Envío", // ✅ Cambiar de "Prioritario" a "Tipo de Envío"
+        "Precio final",
+        "ESTADO"
+    };
 
         // Crear modelo de tabla sin datos inicialmente
         DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
@@ -171,21 +172,21 @@ public class DashboardView extends javax.swing.JFrame {
     public void initializeLogisticaTable() {
         // Definir las columnas según la imagen de logística
         String[] columnNames = {
-            "Nro Orden",
-            "ESTADO DE ENVÍO", // ✅ Cambiado de "ESTADO" a "ESTADO DE ENVÍO"
-            "DNI",
-            "Nombre",
-            "Producto",
-            "Cantidad",
-            "Prioritario",
-            "Departamento",
-            "Provincia",
-            "Distrito",
-            "Dirección",
-            "Transportadora",
-            "Nro Tracking",
-            "Cod Tracking"
-        };
+        "Nro Orden",
+        "ESTADO DE ENVÍO",
+        "DNI",
+        "Nombre",
+        "Producto",
+        "Cantidad",
+        "Tipo de Envío", // ✅ Cambiar de "Prioritario" a "Tipo de Envío"
+        "Departamento",
+        "Provincia",
+        "Distrito",
+        "Dirección",
+        "Transportadora",
+        "Nro Tracking",
+        "Cod Tracking"
+    };
 
         // Crear modelo de tabla sin datos inicialmente
         DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
@@ -492,7 +493,7 @@ public class DashboardView extends javax.swing.JFrame {
                     .addGroup(logisticaPaneLayout.createSequentialGroup()
                         .addComponent(editarInfoLogisticaButton, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(updateShalom, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(updateShalom, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(17, 17, 17))))
         );
         logisticaPaneLayout.setVerticalGroup(

@@ -32,9 +32,9 @@ public class PedidoBuilder {
         p.setEstado(e);
         return this;
     }
-
-    public PedidoBuilder setPrioritario(boolean b){
-        p.setPrioritario(b);
+    
+    public PedidoBuilder setTipoEnvio(String tipo){
+        p.setTipoEnvio(tipo);
         return this;
     }
 

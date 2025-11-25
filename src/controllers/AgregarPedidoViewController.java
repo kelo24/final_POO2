@@ -44,7 +44,7 @@ public class AgregarPedidoViewController {
      * Registra un nuevo pedido usando Factory + Builder
      */
     public boolean registrarPedido(String dni, String nombre, String celular, 
-                                    String sku, int cantidad) {
+                                    String sku, int cantidad, String tipoEnvio) {
         // Validar campos del cliente
         if (dni == null || dni.trim().isEmpty()) {
             System.err.println("Error: El DNI no puede estar vacío");
@@ -72,6 +72,11 @@ public class AgregarPedidoViewController {
             return false;
         }
         
+        if (tipoEnvio == null || tipoEnvio.trim().isEmpty() || tipoEnvio.equals("Seleccionar...")) {
+        System.err.println("Error: Debe seleccionar un tipo de envío");
+        return false;
+    }
+        
         // Buscar el producto
         Producto producto = productoRepository.findBySku(sku);
         if (producto == null) {
@@ -94,13 +99,14 @@ public class AgregarPedidoViewController {
         String fecha = sdf.format(new Date());
         
         Pedido pedido = new PedidoBuilder()
-            .setId(idPedido)
-            .setFecha(fecha)
-            .setProducto(producto)
-            .setCliente(cliente)
-            .setCantidad(cantidad)
-            .setEstado("PENDIENTE")
-            .build();
+        .setId(idPedido)
+        .setFecha(fecha)
+        .setProducto(producto)
+        .setCliente(cliente)
+        .setCantidad(cantidad)
+        .setEstado("PENDIENTE")
+        .setTipoEnvio(tipoEnvio)
+        .build();
         
         // Guardar en el repositorio
         boolean guardado = pedidoRepository.save(pedido);

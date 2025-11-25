@@ -22,6 +22,7 @@ public class AgregarPedidoView extends javax.swing.JInternalFrame {
         controller = new controllers.AgregarPedidoViewController();
         controller.initialize();
         inicializarComboSKU();
+        inicializarComboTipoEnvio();
     }
 
     // 3. Métodos para establecer referencias
@@ -34,6 +35,19 @@ public class AgregarPedidoView extends javax.swing.JInternalFrame {
 
     public void setParentFrame(javax.swing.JFrame frame) {
     this.parentFrame = frame;
+}
+    
+/**
+ * Inicializa el combo de tipo de envío usando el enum
+ */
+private void inicializarComboTipoEnvio() {
+    tipoEnvioCombo.removeAllItems();
+    tipoEnvioCombo.addItem("Seleccionar...");
+    
+    // ✅ Usar el enum para llenar el combo
+    for (models.TipoEnvio tipo : models.TipoEnvio.values()) {
+        tipoEnvioCombo.addItem(tipo.getDescripcion());
+    }
 }
 
 // 4. Método para inicializar el combo de SKU
@@ -250,8 +264,6 @@ public class AgregarPedidoView extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_skuProductoVentasComboActionPerformed
 
     private void registrarPedidoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarPedidoButtonActionPerformed
-        // TODO add your handling code here:
-
         if (controller == null) {
         javax.swing.JOptionPane.showMessageDialog(
             this,
@@ -260,6 +272,46 @@ public class AgregarPedidoView extends javax.swing.JInternalFrame {
             javax.swing.JOptionPane.ERROR_MESSAGE
         );
         return;
+    }
+
+    String dni = dniField.getText();
+    String nombre = nombreField.getText();
+    String celular = celularField.getText();
+    String sku = (String) skuProductoVentasCombo.getSelectedItem();
+    int cantidad = (Integer) cantidadProductoVentasField.getValue();
+    String tipoEnvio = (String) tipoEnvioCombo.getSelectedItem(); // ✅ Obtener tipo de envío
+
+    boolean exitoso = controller.registrarPedido(dni, nombre, celular, sku, cantidad, tipoEnvio);
+
+    if (exitoso) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Pedido registrado exitosamente",
+            "Éxito",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE
+        );
+
+        // Limpiar campos
+        dniField.setText("");
+        nombreField.setText("");
+        celularField.setText("");
+        skuProductoVentasCombo.setSelectedIndex(0);
+        cantidadProductoVentasField.setValue(0);
+        tipoEnvioCombo.setSelectedIndex(0); // ✅ Resetear tipo de envío
+        dniField.requestFocus();
+
+        // Actualizar tablas
+        if (dashboardController != null) {
+            dashboardController.actualizarTablaVentas();
+        }
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Error al registrar el pedido. Verifica todos los campos.",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE
+        );
+    }
     }
     
     // Obtener valores de los campos
