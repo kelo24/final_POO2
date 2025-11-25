@@ -193,4 +193,56 @@ public class DashboardViewController {
         
         System.out.println("Movimiento registrado y tablas actualizadas");
     }
+    
+    /**
+     * Registra un movimiento desde el formulario del dashboard
+     */
+    public boolean registrarMovimientoDesdeFormulario(String sku, String tipoMovimiento, int cantidad) {
+        // Validar campos
+        if (sku == null || sku.trim().isEmpty() || sku.equals("Seleccionar...")) {
+            System.err.println("Error: Debe seleccionar un producto");
+            return false;
+        }
+        
+        if (tipoMovimiento == null || tipoMovimiento.trim().isEmpty() || tipoMovimiento.equals("Seleccionar...")) {
+            System.err.println("Error: Debe seleccionar un tipo de movimiento");
+            return false;
+        }
+        
+        if (cantidad <= 0) {
+            System.err.println("Error: La cantidad debe ser mayor a 0");
+            return false;
+        }
+        
+        // Buscar el producto
+        Producto producto = productoRepository.findBySku(sku);
+        if (producto == null) {
+            System.err.println("Error: Producto no encontrado");
+            return false;
+        }
+        
+        // Validar stock disponible para salidas
+        if (tipoMovimiento.equalsIgnoreCase("Salida")) {
+            if (producto.getStock() < cantidad) {
+                System.err.println("Error: Stock insuficiente. Stock actual: " + producto.getStock());
+                return false;
+            }
+        }
+        
+        // Actualizar stock del producto
+        if (tipoMovimiento.equalsIgnoreCase("Ingreso")) {
+            producto.setStock(producto.getStock() + cantidad);
+        } else if (tipoMovimiento.equalsIgnoreCase("Salida")) {
+            producto.setStock(producto.getStock() - cantidad);
+        }
+        
+        // Guardar producto actualizado
+        productoRepository.update(producto);
+        
+        // Registrar el movimiento
+        registrarMovimientoInventario(sku, producto.getNombre(), tipoMovimiento.toUpperCase(), cantidad);
+        
+        System.out.println("Movimiento registrado exitosamente");
+        return true;
+    }
 }

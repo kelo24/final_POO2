@@ -41,12 +41,25 @@ public void cargarDatosIniciales() {
     // Cargar productos en el combo de SKU
     cargarProductosEnCombo();
     
+    // Inicializar combo de movimientos
+    inicializarComboMovimientos();
+    
     System.out.println("Datos iniciales cargados");
 }
 
 // Método PÚBLICO para actualizar el combo de productos
 public void actualizarComboProductos() {
     cargarProductosEnCombo();
+}
+
+// Método para inicializar el combo de movimientos
+private void inicializarComboMovimientos() {
+    movimientoCombo.removeAllItems();
+    movimientoCombo.addItem("Seleccionar...");
+    movimientoCombo.addItem("Ingreso");
+    movimientoCombo.addItem("Salida");
+    
+    System.out.println("Combo de movimientos inicializado");
 }
 
 // Método para cargar productos en el combo
@@ -698,6 +711,49 @@ public void recargarDatos() {
 
     private void registrarMovimientoButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarMovimientoButton1ActionPerformed
         // TODO add your handling code here:
+        
+        if (controller == null) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Error: Controller no inicializado",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE
+        );
+        return;
+    }
+    
+    // Obtener valores de los campos
+    String sku = (String) skuInvCombo.getSelectedItem();
+    String tipoMovimiento = (String) movimientoCombo.getSelectedItem();
+    int cantidad = (Integer) cantidadInvField1.getValue();
+    
+    // Registrar movimiento
+    boolean exitoso = controller.registrarMovimientoDesdeFormulario(sku, tipoMovimiento, cantidad);
+    
+    if (exitoso) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Movimiento registrado exitosamente",
+            "Éxito",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE
+        );
+        
+        // Limpiar campos
+        skuInvCombo.setSelectedIndex(0);
+        movimientoCombo.setSelectedIndex(0);
+        cantidadInvField1.setValue(0);
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Error al registrar el movimiento. Verifica:\n" +
+            "- Que hayas seleccionado un producto\n" +
+            "- Que hayas seleccionado el tipo de movimiento\n" +
+            "- Que la cantidad sea mayor a 0\n" +
+            "- Para SALIDAS: que haya stock suficiente",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE
+        );
+    }
     }//GEN-LAST:event_registrarMovimientoButton1ActionPerformed
 
     private void nuevoProductoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevoProductoButtonActionPerformed
