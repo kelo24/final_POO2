@@ -13,9 +13,28 @@ public class CreateProductView extends javax.swing.JInternalFrame {
     /**
      * Creates new form CreateProductView
      */
+    private controllers.CreateProductViewController controller;
+    private controllers.DashboardViewController dashboardController;
+    private javax.swing.JFrame parentFrame;
+
     public CreateProductView() {
         initComponents();
+        controller = new controllers.CreateProductViewController();
+        controller.initialize();
     }
+
+    public void setParentFrame(javax.swing.JFrame frame) {
+        this.parentFrame = frame;
+    }
+
+    public void setDashboardController(controllers.DashboardViewController dashboardController) {
+    this.dashboardController = dashboardController;
+    
+    // Pasar también al CreateProductViewController
+    if (controller != null) {
+        controller.setDashboardController(dashboardController);
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -31,26 +50,19 @@ public class CreateProductView extends javax.swing.JInternalFrame {
         jLabel25 = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
         cantidadInvField2 = new javax.swing.JSpinner();
-        registrarProductoButton = new javax.swing.JButton();
         jLabel27 = new javax.swing.JLabel();
         skuInvField = new javax.swing.JTextField();
         nombreInvField = new javax.swing.JTextField();
         precioInvField = new javax.swing.JTextField();
         jLabel28 = new javax.swing.JLabel();
         backButton = new javax.swing.JButton();
+        registrarProductoButton = new javax.swing.JButton();
 
         jLabel24.setText("SKU");
 
         jLabel25.setText("Nombre");
 
         jLabel26.setText("Cantidad");
-
-        registrarProductoButton.setText("Registrar producto");
-        registrarProductoButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                registrarProductoButtonActionPerformed(evt);
-            }
-        });
 
         jLabel27.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel27.setText("Registrar nuevo producto");
@@ -61,6 +73,13 @@ public class CreateProductView extends javax.swing.JInternalFrame {
         backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backButtonActionPerformed(evt);
+            }
+        });
+
+        registrarProductoButton.setText("Registrar producto");
+        registrarProductoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registrarProductoButtonActionPerformed(evt);
             }
         });
 
@@ -89,11 +108,11 @@ public class CreateProductView extends javax.swing.JInternalFrame {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGap(126, 126, 126)
-                        .addComponent(registrarProductoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGap(119, 119, 119)
+                        .addComponent(registrarProductoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
@@ -117,9 +136,9 @@ public class CreateProductView extends javax.swing.JInternalFrame {
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel26)
                     .addComponent(cantidadInvField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
-                .addComponent(registrarProductoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addGap(27, 27, 27)
+                .addComponent(registrarProductoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
                 .addComponent(backButton)
                 .addGap(21, 21, 21))
         );
@@ -138,13 +157,62 @@ public class CreateProductView extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void registrarProductoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarProductoButtonActionPerformed
-
-    }//GEN-LAST:event_registrarProductoButtonActionPerformed
-
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
+
+        if (parentFrame != null) {
+            parentFrame.dispose();
+        }
     }//GEN-LAST:event_backButtonActionPerformed
+
+    private void registrarProductoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarProductoButtonActionPerformed
+        // TODO add your handling code here:
+
+        if (controller == null) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Error: Controller no inicializado",
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
+        String sku = skuInvField.getText();
+        String nombre = nombreInvField.getText();
+        String precio = precioInvField.getText();
+        int cantidad = (Integer) cantidadInvField2.getValue();
+
+        boolean exitoso = controller.registrarProducto(sku, nombre, precio, cantidad);
+
+        if (exitoso) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Producto registrado exitosamente",
+                    "Éxito",
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE
+            );
+
+            skuInvField.setText("");
+            nombreInvField.setText("");
+            precioInvField.setText("");
+            cantidadInvField2.setValue(0);
+            skuInvField.requestFocus();
+
+            // AGREGAR ESTAS LÍNEAS - Actualizar tabla de inventario
+            if (dashboardController != null) {
+                dashboardController.actualizarTablaInventario();
+            }
+
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Error al registrar el producto. Verifica que el SKU no exista.",
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }//GEN-LAST:event_registrarProductoButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

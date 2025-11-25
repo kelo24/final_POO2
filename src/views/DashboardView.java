@@ -20,11 +20,11 @@ public class DashboardView extends javax.swing.JFrame {
     private JDesktopPane desktop;
 
     public DashboardView() {
-    initComponents();
-    controller = new controllers.DashboardViewController();
-    controller.initialize();
-    controller.setDashboardView(this);
-}
+        initComponents();
+        controller = new controllers.DashboardViewController();
+        controller.initialize();
+        controller.setDashboardView(this);
+    }
 
     // Agregar este método para establecer el controller
     public void setController(controllers.DashboardViewController controller) {
@@ -34,21 +34,21 @@ public class DashboardView extends javax.swing.JFrame {
     // Método para agregar JInternalFrame al desktop
     public void addInternalFrame(javax.swing.JInternalFrame frame) {
         desktop.add(frame);
-    frame.setVisible(true);
-    
-    // Centrar el frame en el desktop
-    frame.setLocation(
-        (desktop.getWidth() - frame.getWidth()) / 2,
-        (desktop.getHeight() - frame.getHeight()) / 2
-    );
-    
-    try {
-        frame.setSelected(true);
-    } catch (java.beans.PropertyVetoException e) {
-        System.err.println("Error al seleccionar frame: " + e.getMessage());
-    }
-    
-    System.out.println("JInternalFrame agregado al desktop");
+        frame.setVisible(true);
+
+        // Centrar el frame en el desktop
+        frame.setLocation(
+                (desktop.getWidth() - frame.getWidth()) / 2,
+                (desktop.getHeight() - frame.getHeight()) / 2
+        );
+
+        try {
+            frame.setSelected(true);
+        } catch (java.beans.PropertyVetoException e) {
+            System.err.println("Error al seleccionar frame: " + e.getMessage());
+        }
+
+        System.out.println("JInternalFrame agregado al desktop");
     }
 
     // Método para inicializar la tabla de ventas
@@ -170,6 +170,11 @@ public class DashboardView extends javax.swing.JFrame {
         System.out.println("Tabla de inventario inicializada");
     }
 
+    // En DashboardView.java - AGREGAR ESTE MÉTODO
+    public javax.swing.JTable getInventarioTable() {
+        return inventarioTable;
+    }
+
 // Método para inicializar la tabla de reportes (conteo de inventario)
     public void initializeReportesTable() {
         // Definir las columnas según la imagen de reportes
@@ -239,7 +244,7 @@ public class DashboardView extends javax.swing.JFrame {
         cantidadInvField1 = new javax.swing.JSpinner();
         jLabel7 = new javax.swing.JLabel();
         registrarMovimientoButton1 = new javax.swing.JButton();
-        registrarMovimientoButton = new javax.swing.JButton();
+        nuevoProductoButton = new javax.swing.JButton();
         reportePane = new javax.swing.JPanel();
         jLabel31 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -512,10 +517,10 @@ public class DashboardView extends javax.swing.JFrame {
                     .addGap(7, 7, 7)))
         );
 
-        registrarMovimientoButton.setText("NuevoProductoButton");
-        registrarMovimientoButton.addActionListener(new java.awt.event.ActionListener() {
+        nuevoProductoButton.setText("Nuevo producto");
+        nuevoProductoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                registrarMovimientoButtonActionPerformed(evt);
+                nuevoProductoButtonActionPerformed(evt);
             }
         });
 
@@ -531,7 +536,7 @@ public class DashboardView extends javax.swing.JFrame {
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(registrarMovimientoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(nuevoProductoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(128, Short.MAX_VALUE))
         );
         inventarioPaneLayout.setVerticalGroup(
@@ -545,7 +550,7 @@ public class DashboardView extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addComponent(registrarMovimientoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(nuevoProductoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(75, Short.MAX_VALUE))
         );
 
@@ -647,9 +652,17 @@ public class DashboardView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_registrarMovimientoButton1ActionPerformed
 
-    private void registrarMovimientoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarMovimientoButtonActionPerformed
+    private void nuevoProductoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevoProductoButtonActionPerformed
 
-    }//GEN-LAST:event_registrarMovimientoButtonActionPerformed
+        // Verificar que el controller esté inicializado
+        if (controller == null) {
+            System.err.println("Error: Controller no inicializado");
+            return;
+        }
+
+        // Llamar al controller para abrir la vista de crear producto
+        controller.abrirCreateProductView();
+    }//GEN-LAST:event_nuevoProductoButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -680,7 +693,7 @@ public class DashboardView extends javax.swing.JFrame {
     private javax.swing.JPanel logisticaPane;
     private javax.swing.JTable logisticaTable;
     private javax.swing.JComboBox<String> movimientoCombo;
-    private javax.swing.JButton registrarMovimientoButton;
+    private javax.swing.JButton nuevoProductoButton;
     private javax.swing.JButton registrarMovimientoButton1;
     private javax.swing.JPanel reportePane;
     private javax.swing.JButton salirButton;

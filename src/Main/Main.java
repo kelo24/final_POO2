@@ -12,10 +12,13 @@ public class Main {
     
     public static void main(String[] args) {
         
-        // Ejecutar la aplicación a través del HomeController
-        java.awt.EventQueue.invokeLater(() -> {
-            HomeController homeController = HomeController.getInstance();
-            homeController.run();
-        });
+        // Inicializar la estructura de archivos
+    config.FileConfig.inicializar();
+    
+    // Ejecutar la aplicación a través del HomeController
+    java.awt.EventQueue.invokeLater(() -> {
+        HomeController homeController = HomeController.getInstance();
+        homeController.run();
+    });
     }
 }
