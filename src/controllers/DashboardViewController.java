@@ -43,6 +43,12 @@ public class DashboardViewController {
 
         JFrame frame = new JFrame("Agregar Pedido");
         AgregarPedidoView agregarPedidoView = new AgregarPedidoView();
+        
+        // Pasar referencia del DashboardViewController
+        agregarPedidoView.setDashboardController(this);
+        
+        // Pasar referencia del JFrame padre
+        agregarPedidoView.setParentFrame(frame);
 
         agregarPedidoView.setBorder(null);
         ((javax.swing.plaf.basic.BasicInternalFrameUI) agregarPedidoView.getUI()).setNorthPane(null);
@@ -170,6 +176,42 @@ public class DashboardViewController {
         if (dashboardView != null) {
             dashboardView.actualizarComboProductos();
         }
+    }
+    
+    /**
+     * Actualiza la tabla de ventas (pedidos)
+     */
+    public void actualizarTablaVentas() {
+        if (dashboardView == null) {
+            System.err.println("DashboardView no está inicializado");
+            return;
+        }
+
+        // Obtener pedidos desde el repositorio
+        repository.PedidoRepositorio pedidoRepo = new repository.PedidoRepositorio();
+        java.util.List<models.Pedido> pedidos = pedidoRepo.findAll();
+
+        // Obtener el modelo de la tabla de ventas
+        DefaultTableModel model = (DefaultTableModel) dashboardView.getVentasTable().getModel();
+
+        // Limpiar tabla
+        model.setRowCount(0);
+
+        // Agregar todos los pedidos
+        for (models.Pedido p : pedidos) {
+            model.addRow(new Object[]{
+                p.getOrden(),
+                p.getFechaPedido(),
+                p.getCliente().getDni(),
+                p.getCliente().getNombre(),
+                p.getProducto().getNombre(),
+                p.getCantidad(),
+                p.getPrecio(),
+                p.getEstado()
+            });
+        }
+
+        System.out.println("Tabla de ventas actualizada con " + pedidos.size() + " pedidos");
     }
 
     /**

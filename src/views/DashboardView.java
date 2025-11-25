@@ -21,68 +21,68 @@ public class DashboardView extends javax.swing.JFrame {
 
     public DashboardView() {
         initComponents();
-    controller = new controllers.DashboardViewController();
-    controller.initialize();
-    controller.setDashboardView(this);
+        controller = new controllers.DashboardViewController();
+        controller.initialize();
+        controller.setDashboardView(this);
     }
 
-    
+// Método PÚBLICO para cargar datos iniciales
+    public void cargarDatosIniciales() {
+        System.out.println("Cargando datos iniciales del dashboard...");
 
-    // Método PÚBLICO para cargar datos iniciales
-public void cargarDatosIniciales() {
-    System.out.println("Cargando datos iniciales del dashboard...");
-    
-    // Cargar movimientos de inventario
-    controller.actualizarTablaInventario();
-    
-    // Cargar conteo de inventario (reportes)
-    controller.actualizarTablaConteoInventario();
-    
-    // Cargar productos en el combo de SKU
-    cargarProductosEnCombo();
-    
-    // Inicializar combo de movimientos
-    inicializarComboMovimientos();
-    
-    System.out.println("Datos iniciales cargados");
-}
+        // Cargar pedidos en tabla de ventas
+        controller.actualizarTablaVentas();
+
+        // Cargar movimientos de inventario
+        controller.actualizarTablaInventario();
+
+        // Cargar conteo de inventario (reportes)
+        controller.actualizarTablaConteoInventario();
+
+        // Cargar productos en el combo de SKU
+        cargarProductosEnCombo();
+
+        // Inicializar combo de movimientos
+        inicializarComboMovimientos();
+
+        System.out.println("Datos iniciales cargados");
+    }
 
 // Método PÚBLICO para actualizar el combo de productos
-public void actualizarComboProductos() {
-    cargarProductosEnCombo();
-}
+    public void actualizarComboProductos() {
+        cargarProductosEnCombo();
+    }
 
 // Método para inicializar el combo de movimientos
-private void inicializarComboMovimientos() {
-    movimientoCombo.removeAllItems();
-    movimientoCombo.addItem("Seleccionar...");
-    movimientoCombo.addItem("Ingreso");
-    movimientoCombo.addItem("Salida");
-    
-    System.out.println("Combo de movimientos inicializado");
-}
+    private void inicializarComboMovimientos() {
+        movimientoCombo.removeAllItems();
+        movimientoCombo.addItem("Seleccionar...");
+        movimientoCombo.addItem("Ingreso");
+        movimientoCombo.addItem("Salida");
+
+        System.out.println("Combo de movimientos inicializado");
+    }
 
 // Método para cargar productos en el combo
-private void cargarProductosEnCombo() {
-    skuInvCombo.removeAllItems();
-    skuInvCombo.addItem("Seleccionar...");
-    
-    // Obtener productos del repositorio
-    repository.ProductoRepositorio productoRepo = new repository.ProductoRepositorio();
-    java.util.List<models.Producto> productos = productoRepo.findAll();
-    
-    for (models.Producto p : productos) {
-        skuInvCombo.addItem(p.getSku());
+    private void cargarProductosEnCombo() {
+        skuInvCombo.removeAllItems();
+        skuInvCombo.addItem("Seleccionar...");
+
+        // Obtener productos del repositorio
+        repository.ProductoRepositorio productoRepo = new repository.ProductoRepositorio();
+        java.util.List<models.Producto> productos = productoRepo.findAll();
+
+        for (models.Producto p : productos) {
+            skuInvCombo.addItem(p.getSku());
+        }
+
+        System.out.println("Productos cargados en combo: " + productos.size());
     }
-    
-    System.out.println("Productos cargados en combo: " + productos.size());
-}
 
 // Método público para recargar datos (llamar desde otras vistas)
-public void recargarDatos() {
-    cargarDatosIniciales();
-}
-
+    public void recargarDatos() {
+        cargarDatosIniciales();
+    }
 
     public javax.swing.JTable getInventarioTable() {
         return inventarioTable;
@@ -90,6 +90,10 @@ public void recargarDatos() {
 
     public javax.swing.JTable getConteoTable() {
         return conteoTable;
+    }
+
+    public javax.swing.JTable getVentasTable() {
+        return ventasTable;
     }
 
     // Agregar este método para establecer el controller
@@ -671,8 +675,6 @@ public void recargarDatos() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void agregarpedidoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarpedidoButtonActionPerformed
-        // TODO add your handling code here:
-
         // Verificar que el controller esté inicializado
         if (controller == null) {
             System.err.println("Error: Controller no inicializado");
@@ -711,49 +713,49 @@ public void recargarDatos() {
 
     private void registrarMovimientoButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarMovimientoButton1ActionPerformed
         // TODO add your handling code here:
-        
+
         if (controller == null) {
-        javax.swing.JOptionPane.showMessageDialog(
-            this,
-            "Error: Controller no inicializado",
-            "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE
-        );
-        return;
-    }
-    
-    // Obtener valores de los campos
-    String sku = (String) skuInvCombo.getSelectedItem();
-    String tipoMovimiento = (String) movimientoCombo.getSelectedItem();
-    int cantidad = (Integer) cantidadInvField1.getValue();
-    
-    // Registrar movimiento
-    boolean exitoso = controller.registrarMovimientoDesdeFormulario(sku, tipoMovimiento, cantidad);
-    
-    if (exitoso) {
-        javax.swing.JOptionPane.showMessageDialog(
-            this,
-            "Movimiento registrado exitosamente",
-            "Éxito",
-            javax.swing.JOptionPane.INFORMATION_MESSAGE
-        );
-        
-        // Limpiar campos
-        skuInvCombo.setSelectedIndex(0);
-        movimientoCombo.setSelectedIndex(0);
-        cantidadInvField1.setValue(0);
-    } else {
-        javax.swing.JOptionPane.showMessageDialog(
-            this,
-            "Error al registrar el movimiento. Verifica:\n" +
-            "- Que hayas seleccionado un producto\n" +
-            "- Que hayas seleccionado el tipo de movimiento\n" +
-            "- Que la cantidad sea mayor a 0\n" +
-            "- Para SALIDAS: que haya stock suficiente",
-            "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE
-        );
-    }
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Error: Controller no inicializado",
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
+        // Obtener valores de los campos
+        String sku = (String) skuInvCombo.getSelectedItem();
+        String tipoMovimiento = (String) movimientoCombo.getSelectedItem();
+        int cantidad = (Integer) cantidadInvField1.getValue();
+
+        // Registrar movimiento
+        boolean exitoso = controller.registrarMovimientoDesdeFormulario(sku, tipoMovimiento, cantidad);
+
+        if (exitoso) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Movimiento registrado exitosamente",
+                    "Éxito",
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE
+            );
+
+            // Limpiar campos
+            skuInvCombo.setSelectedIndex(0);
+            movimientoCombo.setSelectedIndex(0);
+            cantidadInvField1.setValue(0);
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Error al registrar el movimiento. Verifica:\n"
+                    + "- Que hayas seleccionado un producto\n"
+                    + "- Que hayas seleccionado el tipo de movimiento\n"
+                    + "- Que la cantidad sea mayor a 0\n"
+                    + "- Para SALIDAS: que haya stock suficiente",
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+        }
     }//GEN-LAST:event_registrarMovimientoButton1ActionPerformed
 
     private void nuevoProductoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevoProductoButtonActionPerformed

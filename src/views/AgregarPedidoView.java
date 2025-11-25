@@ -13,8 +13,42 @@ public class AgregarPedidoView extends javax.swing.JInternalFrame {
     /**
      * Creates new form AgregarPedidoView
      */
+    private controllers.AgregarPedidoViewController controller;
+    private controllers.DashboardViewController dashboardController;
+    private javax.swing.JFrame parentFrame;
+
     public AgregarPedidoView() {
         initComponents();
+        controller = new controllers.AgregarPedidoViewController();
+        controller.initialize();
+        inicializarComboSKU();
+    }
+
+    // 3. Métodos para establecer referencias
+    public void setDashboardController(controllers.DashboardViewController dashboardController) {
+        this.dashboardController = dashboardController;
+        if (controller != null) {
+            controller.setDashboardController(dashboardController);
+        }
+    }
+
+    public void setParentFrame(javax.swing.JFrame frame) {
+    this.parentFrame = frame;
+}
+
+// 4. Método para inicializar el combo de SKU
+    private void inicializarComboSKU() {
+        skuProductoVentasCombo.removeAllItems();
+        skuProductoVentasCombo.addItem("Seleccionar...");
+
+        // Obtener productos del controller
+        java.util.List<models.Producto> productos = controller.obtenerProductos();
+
+        for (models.Producto p : productos) {
+            skuProductoVentasCombo.addItem(p.getSku());
+        }
+
+        System.out.println("Combo SKU inicializado con " + productos.size() + " productos");
     }
 
     /**
@@ -199,10 +233,74 @@ public class AgregarPedidoView extends javax.swing.JInternalFrame {
 
     private void registrarPedidoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarPedidoButtonActionPerformed
         // TODO add your handling code here:
+
+        if (controller == null) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Error: Controller no inicializado",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE
+        );
+        return;
+    }
+    
+    // Obtener valores de los campos
+    String dni = dniField.getText();
+    String nombre = nombreField.getText();
+    String celular = celularField.getText();
+    String sku = (String) skuProductoVentasCombo.getSelectedItem();
+    int cantidad = (Integer) cantidadProductoVentasField.getValue();
+    
+    // Registrar pedido
+    boolean exitoso = controller.registrarPedido(dni, nombre, celular, sku, cantidad);
+    
+    if (exitoso) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Pedido registrado exitosamente",
+            "Éxito",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE
+        );
+        
+        // Limpiar campos
+        dniField.setText("");
+        nombreField.setText("");
+        celularField.setText("");
+        skuProductoVentasCombo.setSelectedIndex(0);
+        cantidadProductoVentasField.setValue(0);
+        
+        dniField.requestFocus();
+        
+        // Actualizar TODAS las tablas del dashboard
+        if (dashboardController != null) {
+            dashboardController.actualizarTablaVentas();       // ← NUEVO
+            dashboardController.actualizarTablaInventario();
+            dashboardController.actualizarTablaConteoInventario();
+        }
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Error al registrar el pedido. Verifica:\n" +
+            "- Todos los campos del cliente estén llenos\n" +
+            "- Hayas seleccionado un producto\n" +
+            "- La cantidad sea mayor a 0\n" +
+            "- Haya stock disponible",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE
+        );
+    }
     }//GEN-LAST:event_registrarPedidoButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
+
+        // Cerrar la ventana padre
+    if (parentFrame != null) {
+        parentFrame.dispose();
+    } else {
+        // Si no hay parentFrame, intentar cerrar desde la ventana contenedora
+        javax.swing.SwingUtilities.getWindowAncestor(this).dispose();
+    }
     }//GEN-LAST:event_backButtonActionPerformed
 
 
