@@ -5,6 +5,8 @@ import java.io.Serializable;
 
 public class InfoPago implements Serializable {
     
+    private static final long serialVersionUID = 1L;
+    
     // Attributes
     private String metodo; // Efectivo / Tarjeta / Transferencia
     private double adelanto;

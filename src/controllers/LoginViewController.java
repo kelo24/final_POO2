@@ -8,11 +8,10 @@ import views.DashboardView;
  */
 public class LoginViewController {
     
-    private HomeController homeController;
     private LoginView loginView;
     
     public void initialize() {
-        homeController = HomeController.getInstance();
+        HomeController.getInstance();
         System.out.println("LoginViewController inicializado");
     }
     
@@ -49,7 +48,7 @@ public class LoginViewController {
         // - Llamar a un servicio de autenticación
         
         // Ejemplo simple (CAMBIAR EN PRODUCCIÓN):
-        return username.equals("1") && password.equals("1");
+        return username.equals("admin") && password.equals("1234");
     }
     
     /**
@@ -69,6 +68,7 @@ public class LoginViewController {
         dashboard.initializeVentasTable();
         dashboard.initializeLogisticaTable();
         dashboard.initializeInventarioTable();
+        dashboard.initializeReportesTable();
         dashboard.setVisible(true);
     }
     
