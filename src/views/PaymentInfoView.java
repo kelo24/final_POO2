@@ -88,7 +88,7 @@ public void setDashboardController(controllers.DashboardViewController dashboard
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel1.setText("Información de pago");
 
-        jLabel23.setText("Adelanto:");
+        jLabel23.setText("Pagado:");
 
         jLabel24.setText("Saldo restante:");
 
