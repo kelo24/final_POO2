@@ -1,22 +1,31 @@
-package controllers;
+package repository;
 
+import controllers.HomeController;
 import views.AgregarPedidoView;
-import views.CreateProductView;
-import views.DashboardView;
+import repository.CreateProductView;
+import repository.DashboardView;
+import models.Producto;
+import repository.MovimientoInventario;
+import repository.ProductoRepositorio;
+import repository.MovimientoRepository;
 import javax.swing.JFrame;
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
 
 /**
  * DashboardViewController - Controlador para la lógica de negocio del Dashboard
  */
 public class DashboardViewController {
 
-    private java.util.List<models.MovimientoInventario> movimientos = new java.util.ArrayList<>();
-
     private HomeController homeController;
     private DashboardView dashboardView;
+    private ProductoRepositorio productoRepository;
+    private MovimientoRepository movimientoRepository;
 
     public void initialize() {
         homeController = HomeController.getInstance();
+        productoRepository = new ProductoRepositorio();
+        movimientoRepository = new MovimientoRepository();
         System.out.println("DashboardViewController inicializado");
     }
 
@@ -33,11 +42,9 @@ public class DashboardViewController {
     public void abrirAgregarPedidoView() {
         System.out.println("Abriendo vista de agregar pedido...");
 
-        // Crear un JFrame temporal para contener el JInternalFrame
         JFrame frame = new JFrame("Agregar Pedido");
         AgregarPedidoView agregarPedidoView = new AgregarPedidoView();
 
-        // Remover los bordes del JInternalFrame
         agregarPedidoView.setBorder(null);
         ((javax.swing.plaf.basic.BasicInternalFrameUI) agregarPedidoView.getUI()).setNorthPane(null);
 
@@ -76,32 +83,23 @@ public class DashboardViewController {
      */
     public void agregarPedido() {
         System.out.println("Agregando nuevo pedido...");
-        // Aquí va la lógica para agregar pedido
     }
 
     /**
      * Edita un pedido existente
-     *
-     * @param nroOrden número de orden a editar
      */
     public void editarPedido(int nroOrden) {
         System.out.println("Editando pedido: " + nroOrden);
-        // Aquí va la lógica para editar pedido
     }
 
     /**
      * Cambia el estado de un pedido
-     *
-     * @param nroOrden número de orden
-     * @param nuevoEstado nuevo estado del pedido
      */
     public boolean cambiarEstadoPedido(int nroOrden, String nuevoEstado) {
         System.out.println("Cambiando estado del pedido " + nroOrden + " a: " + nuevoEstado);
-        // Aquí va la lógica para cambiar estado en la BD
         return true;
     }
 
-    // En DashboardViewController.java
     /**
      * Actualiza la tabla de inventario con todos los movimientos
      */
@@ -111,15 +109,17 @@ public class DashboardViewController {
             return;
         }
 
+        // Obtener movimientos desde el repositorio
+        List<MovimientoInventario> movimientos = movimientoRepository.findAll();
+
         // Obtener el modelo de la tabla
-        javax.swing.table.DefaultTableModel model
-                = (javax.swing.table.DefaultTableModel) dashboardView.getInventarioTable().getModel();
+        DefaultTableModel model = (DefaultTableModel) dashboardView.getInventarioTable().getModel();
 
         // Limpiar tabla
         model.setRowCount(0);
 
         // Agregar todos los movimientos
-        for (models.MovimientoInventario mov : movimientos) {
+        for (MovimientoInventario mov : movimientos) {
             model.addRow(new Object[]{
                 mov.getNroOrden(),
                 mov.getFecha(),
@@ -134,18 +134,55 @@ public class DashboardViewController {
     }
 
     /**
-     * Registra un movimiento de inventario y actualiza la tabla
+     * Actualiza la tabla de conteo de inventario (reportes)
+     */
+    public void actualizarTablaConteoInventario() {
+        if (dashboardView == null) {
+            System.err.println("DashboardView no está inicializado");
+            return;
+        }
+
+        // Obtener productos desde el repositorio
+        List<Producto> productos = productoRepository.findAll();
+
+        // Obtener el modelo de la tabla de reportes
+        DefaultTableModel model = (DefaultTableModel) dashboardView.getConteoTable().getModel();
+
+        // Limpiar tabla
+        model.setRowCount(0);
+
+        // Agregar todos los productos con su stock actual
+        for (Producto p : productos) {
+            model.addRow(new Object[]{
+                p.getSku(),
+                p.getNombre(),
+                p.getPrecio(),
+                p.getStock()
+            });
+        }
+
+        System.out.println("Tabla de conteo actualizada con " + productos.size() + " productos");
+    }
+
+    /**
+     * Registra un movimiento de inventario y actualiza las tablas
      */
     public void registrarMovimientoInventario(String sku, String producto, String tipoMovimiento, int cantidad) {
-        models.MovimientoInventario movimiento = new models.MovimientoInventario(
+        // Crear el movimiento
+        MovimientoInventario movimiento = new MovimientoInventario(
                 sku,
                 producto,
                 tipoMovimiento,
                 cantidad
         );
 
-        movimientos.add(movimiento);
-        actualizarTablaInventario();
-    }
+        // Guardar en el repositorio
+        movimientoRepository.save(movimiento);
 
+        // Actualizar ambas tablas
+        actualizarTablaInventario();
+        actualizarTablaConteoInventario();
+        
+        System.out.println("Movimiento registrado y tablas actualizadas");
+    }
 }

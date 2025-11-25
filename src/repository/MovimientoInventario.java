@@ -1,5 +1,5 @@
 // Crear archivo: models/MovimientoInventario.java
-package models;
+package repository;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;

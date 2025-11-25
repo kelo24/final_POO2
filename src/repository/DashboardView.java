@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
-package views;
+package repository;
 
 import javax.swing.JDesktopPane;
 import javax.swing.table.DefaultTableModel;
@@ -16,18 +16,61 @@ public class DashboardView extends javax.swing.JFrame {
     /**
      * Creates new form DashboardView
      */
-    private controllers.DashboardViewController controller;
+    private repository.DashboardViewController controller;
     private JDesktopPane desktop;
 
     public DashboardView() {
         initComponents();
-        controller = new controllers.DashboardViewController();
+        controller = new repository.DashboardViewController();
         controller.initialize();
         controller.setDashboardView(this);
+
+        // Cargar datos iniciales en las tablas
+        cargarDatosIniciales();
+    }
+
+    // En DashboardView.java - AGREGAR ESTE MÉTODO
+    public javax.swing.JTable getInventarioTable() {
+        return inventarioTable;
+    }
+
+    // Método para cargar datos iniciales
+    private void cargarDatosIniciales() {
+        // Cargar movimientos de inventario
+        controller.actualizarTablaInventario();
+
+        // Cargar conteo de inventario (reportes)
+        controller.actualizarTablaConteoInventario();
+
+        // Cargar productos en el combo de SKU
+        cargarProductosEnCombo();
+    }
+
+// Método para cargar productos en el combo
+    private void cargarProductosEnCombo() {
+        skuInvCombo.removeAllItems();
+        skuInvCombo.addItem("Seleccionar...");
+
+        // Obtener productos del repositorio
+        repository.ProductoRepositorio productoRepo = new repository.ProductoRepositorio();
+        java.util.List<models.Producto> productos = productoRepo.findAll();
+
+        for (models.Producto p : productos) {
+            skuInvCombo.addItem(p.getSku());
+        }
+    }
+
+// Método público para recargar datos (llamar desde otras vistas)
+    public void recargarDatos() {
+        cargarDatosIniciales();
+    }
+
+    public javax.swing.JTable getConteoTable() {
+        return conteoTable;
     }
 
     // Agregar este método para establecer el controller
-    public void setController(controllers.DashboardViewController controller) {
+    public void setController(repository.DashboardViewController controller) {
         this.controller = controller;
     }
 
@@ -168,11 +211,6 @@ public class DashboardView extends javax.swing.JFrame {
         inventarioTable.getColumnModel().getColumn(5).setPreferredWidth(80);  // Cantidad
 
         System.out.println("Tabla de inventario inicializada");
-    }
-
-    // En DashboardView.java - AGREGAR ESTE MÉTODO
-    public javax.swing.JTable getInventarioTable() {
-        return inventarioTable;
     }
 
 // Método para inicializar la tabla de reportes (conteo de inventario)

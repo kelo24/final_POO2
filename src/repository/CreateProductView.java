@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
-package views;
+package repository;
 
 /**
  *
@@ -13,13 +13,13 @@ public class CreateProductView extends javax.swing.JInternalFrame {
     /**
      * Creates new form CreateProductView
      */
-    private controllers.CreateProductViewController controller;
-    private controllers.DashboardViewController dashboardController;
+    private repository.CreateProductViewController controller;
+    private repository.DashboardViewController dashboardController;
     private javax.swing.JFrame parentFrame;
 
     public CreateProductView() {
         initComponents();
-        controller = new controllers.CreateProductViewController();
+        controller = new repository.CreateProductViewController();
         controller.initialize();
     }
 
@@ -27,7 +27,7 @@ public class CreateProductView extends javax.swing.JInternalFrame {
         this.parentFrame = frame;
     }
 
-    public void setDashboardController(controllers.DashboardViewController dashboardController) {
+    public void setDashboardController(repository.DashboardViewController dashboardController) {
     this.dashboardController = dashboardController;
     
     // Pasar también al CreateProductViewController

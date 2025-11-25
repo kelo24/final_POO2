@@ -1,7 +1,7 @@
 package controllers;
 
 import views.LoginView;
-import views.DashboardView;
+import repository.DashboardView;
 
 /**
  * LoginViewController - Controlador para la lógica de negocio del Login
